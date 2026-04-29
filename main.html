@@ -448,6 +448,7 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 </div>
 
 <script>
+  
 const products = {
   banner: {
     category: 'Identité visuelle',
@@ -539,7 +540,6 @@ function openModal(id) {
   const p = products[id];
   if (!p) return;
 
-  // On prépare la clé pour ton API (ex: buy_banner)
   const serviceKey = 'buy_' + id;
 
   document.getElementById('modal-body').innerHTML = `
@@ -553,86 +553,66 @@ function openModal(id) {
 
     <div style="margin-bottom: 20px; padding: 15px; background: rgba(88,101,242,0.1); border-radius: 10px; border: 1px solid var(--accent);">
         <label style="font-size: 11px; color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase;">Ton ID Discord (obligatoire) :</label>
-        <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345" 
+        <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345"
             style="width: 100%; background: #060608; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; outline: none; font-family: 'Space Mono', monospace; font-size: 13px;">
+        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;">Copie ton ID utilisateur Discord, pas l'ID du serveur. En mode développeur : clic droit sur ton profil → Copier l'identifiant.</p>
     </div>
 
     <div class="modal-footer">
       <div class="modal-price">${p.price} <span>${p.unit}</span></div>
-async function createRemoteTicket(serviceKey) {
-    const userId = document.getElementById('discord_user_id').value;
-    const btn = document.getElementById('btn-order');
-
-    if (!userId || userId.length < 17) {
-        alert("⚠️ Merci d'entrer un ID Discord valide (tu peux le trouver en faisant clic droit sur ton profil Discord > Copier l'identifiant).");
-        return;
-    }
-
-    btn.innerText = "Création du ticket...";
-    btn.disabled = true;
-
-    try {
-        // Utilisation de ton IP Katabump
-        const response = await fetch('http://145.239.65.118:20106/api/external-ticket', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, serviceKey })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("✅ Ton ticket a été ouvert sur Discord !");
-            window.location.href = data.ticketUrl; // Redirection automatique vers le salon
-        } else {
-            alert("❌ Erreur : " + (data.error || "Es-tu sûr d'être sur le serveur Discord ReamX ?"));
-            btn.innerText = "Réessayer";
-            btn.disabled = false;
-        }
-    } catch (error) {
-        console.error(error);
-        alert("🌐 Impossible de joindre le bot. Vérifie qu'il est bien allumé sur Katabump.");
-        btn.innerText = "Ouvrir mon ticket";
-        btn.disabled = false;
-    }
-}    </div>
+    </div>
+    <div style="margin-top: 20px; display: flex; justify-content: center;">
+      <button id="btn-order" class="btn-modal" onclick="createRemoteTicket('${serviceKey}')">Ouvrir mon ticket</button>
+    </div>
   `;
+
   document.getElementById('modal').classList.add('open');
 }
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+function toggleFaq(item) {
+  item.classList.toggle('open');
+}
+
 async function createRemoteTicket(serviceKey) {
-    const userId = document.getElementById('discord_user_id').value;
-    const btn = document.getElementById('btn-order');
+  const userId = document.getElementById('discord_user_id').value;
+  const btn = document.getElementById('btn-order');
 
-    if (!userId || userId.length < 17) {
-        alert("⚠️ Merci d'entrer un ID Discord valide (17-19 chiffres).");
-        return;
+  if (!userId || userId.length < 17) {
+    alert('⚠️ Merci d\'entrer un ID Discord valide (17-19 chiffres).');
+    return;
+  }
+
+  btn.innerText = 'Connexion au bot...';
+  btn.disabled = true;
+
+  try {
+    const response = await fetch('http://145.239.65.118:20106/api/external-ticket', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, serviceKey })
+    });
+
+    const data = await response.json();
+    console.log('ticket request', { userId, serviceKey, status: response.status, data });
+
+    if (response.ok) {
+      alert('✅ Ticket créé ! Redirection...');
+      window.location.href = data.ticketUrl;
+    } else {
+      alert('❌ Erreur : ' + (data.error || 'Es-tu sûr d\'être sur le serveur Discord ReamX ?') + '\nID envoyé : ' + userId + '\nVérifie que tu es bien dans le serveur avec ce compte.');
+      btn.innerText = 'Réessayer';
+      btn.disabled = false;
     }
-
-    btn.innerText = "Connexion au bot...";
-    btn.disabled = true;
-
-    try {
-        const response = await fetch('http://localhost:3000/api/external-ticket', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, serviceKey })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("✅ Ticket créé ! Redirection...");
-            window.location.href = data.ticketUrl;
-        } else {
-            alert("❌ Erreur : " + data.error);
-            btn.innerText = "Réessayer";
-            btn.disabled = false;
-        }
-    } catch (error) {
-        alert("🌐 Le bot n'est pas allumé ou l'adresse est incorrecte.");
-        btn.innerText = "Ouvrir mon ticket";
-        btn.disabled = false;
-    }
+  } catch (error) {
+    console.error(error);
+    alert('🌐 Le bot ne répond pas ou l\'adresse est incorrecte.');
+    btn.innerText = 'Ouvrir mon ticket';
+    btn.disabled = false;
+  }
 }
 
 </script>
