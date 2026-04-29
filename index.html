@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReamX | Domination</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#060608;--surface:#0d0d12;--border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.15);
+--text:#f0f0f0;--muted:#666;--accent:#5865F2;--accent2:#EB459E;--gold:#FFD700;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+
+/* NOISE OVERLAY */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4;pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 5%;border-bottom:1px solid var(--border);background:rgba(6,6,8,0.85);backdrop-filter:blur(20px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#fff}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:30px;list-style:none}
+.nav-links a{color:var(--muted);font-size:13px;font-weight:500;text-decoration:none;letter-spacing:0.5px;transition:color 0.2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--accent);color:#fff;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.3px;transition:opacity 0.2s}
+.nav-cta:hover{opacity:0.85}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(88,101,242,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.3);border-radius:20px;padding:6px 16px;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--accent);margin-bottom:30px;text-transform:uppercase}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent)}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,12vw,140px);line-height:0.9;letter-spacing:2px;margin-bottom:20px}
+h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
+.hero-sub{color:var(--muted);font-size:16px;max-width:460px;line-height:1.7;margin-bottom:45px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:#fff;color:#000;padding:14px 32px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:transform 0.2s,opacity 0.2s}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:#fff;border:1px solid var(--border-hover);padding:14px 32px;border-radius:10px;font-weight:600;font-size:14px;text-decoration:none;transition:border-color 0.2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.4)}
+.hero-stats{display:flex;gap:50px;margin-top:70px;padding-top:40px;border-top:1px solid var(--border)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;display:block}
+.stat-lbl{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+/* PRODUCTS SECTION */
+.products{padding:100px 5%;max-width:1200px;margin:0 auto}
+.section-label{font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,70px);margin-bottom:10px;line-height:1}
+.section-sub{color:var(--muted);font-size:14px;margin-bottom:60px}
+
+/* PRODUCT CARD */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.3s;position:relative}
+.product-card:hover{border-color:var(--border-hover);transform:translateY(-6px)}
+.product-card.featured{border-color:rgba(88,101,242,0.4);box-shadow:0 0 40px rgba(88,101,242,0.08)}
+
+.product-visual{height:220px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden}
+.pv-banner {
+    background-image: url('https://i.postimg.cc/dVJtqNkJ/banner.png');
+    background-size: cover;
+    background-position: center;
+}
+.pv-logo {
+    background-image: url('https://i.postimg.cc/L5ZFTLJv/0c5ba7c3-b661-462b-96ad-57c4f8adba30.png');
+    background-size: cover;
+    background-position: center;
+}
+.pv-color {
+    background-image: url('https://i.postimg.cc/3RhdvrWG/image.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 300px; 
+}
+.pv-fps {
+    background-image: url('https://i.postimg.cc/28tdBvYW/4a1ba393-81c4-4685-8cb3-6a9886e88f09.png');
+    background-size: cover;
+    background-position: center;
+     background-repeat: no-repeat;
+    width: 100%;
+    height: 300px; 
+}
+.pv-bot {
+    background-image: url('https://i.postimg.cc/BnG6yQBZ/image.png');
+    background-size: cover;
+    background-position: center;
+     background-repeat: no-repeat;
+    width: 100%;
+    height: 300px; 
+}
+.pv-pack {
+    background-image: url('https://i.postimg.cc/ZRqFdLWR/image.png');
+    background-size: cover;
+    background-position: center;
+     background-repeat: no-repeat;
+    width: 100%;
+    height: 300px; 
+}
+
+/* Visual mocks inside cards */
+.mock-banner-img{width:100%;height:100%;background:linear-gradient(90deg,rgba(88,101,242,0.3),rgba(235,69,158,0.3));display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.mock-banner-text{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:#fff}
+.mock-banner-sub{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.5)}
+
+.mock-logo-inner{font-family:'Bebas Neue',sans-serif;font-size:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+.mock-palette{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:75%}
+.mock-swatch{height:35px;border-radius:6px}
+
+.mock-fps-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px}
+.fps-counter{font-family:'Space Mono',monospace;font-size:22px;color:#00ff88;text-shadow:0 0 10px rgba(0,255,136,0.5)}
+.fps-label{font-size:8px;color:rgba(0,255,136,0.6);letter-spacing:3px}
+.fps-bars{position:absolute;bottom:10px;left:10px;display:flex;gap:3px;align-items:flex-end}
+.fps-bar{width:4px;background:#00ff88;border-radius:2px;opacity:0.6}
+
+.bot-msg{background:rgba(88,101,242,0.2);border-radius:8px;padding:6px 10px;font-size:9px;color:rgba(255,255,255,0.7);align-self:flex-start;max-width:80%}
+.bot-msg.user{background:rgba(235,69,158,0.2);align-self:flex-end}
+.bot-cmd{background:#1a1a2e;border-radius:6px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:8px;color:var(--accent)}
+
+.pack-item{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:10px;color:rgba(255,255,255,0.6);font-weight:600;letter-spacing:0.5px}
+
+/* CARD BODY */
+.card-badge{position:absolute;top:15px;right:15px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
+.card-badge.hot{background:var(--accent2)}
+.card-badge.new{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.card-body{padding:25px 25px 30px}
+.card-category{font-size:10px;color:var(--accent);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.card-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:8px}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.card-features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.feat{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,0.5)}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.card-price{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1}
+.card-price span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--muted)}
+.card-price.lifetime{color:var(--gold)}
+.btn-card{background:rgba(88,101,242,0.15);border:1px solid rgba(88,101,242,0.3);color:var(--accent);padding:11px 22px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:0.3px;cursor:pointer;display:inline-block}
+.btn-card:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.featured .btn-card{background:var(--accent);color:#fff;border-color:var(--accent)}
+.featured .btn-card:hover{opacity:0.85}
+
+/* PACK SECTION */
+.pack-section{padding:80px 5%;max-width:1200px;margin:0 auto}
+.pack-card{background:var(--surface);border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:50px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;position:relative;overflow:hidden}
+.pack-card::before{content:'ELITE';position:absolute;top:-20px;right:-10px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(255,215,0,0.02);pointer-events:none}
+.pack-title{font-family:'Bebas Neue',sans-serif;font-size:54px;line-height:1;margin-bottom:15px}
+.pack-title span{color:var(--gold)}
+.pack-desc{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:30px}
+.pack-includes{display:flex;flex-direction:column;gap:12px;margin-bottom:35px}
+.pack-item-row{display:flex;align-items:center;gap:12px;font-size:13px}
+.pack-check{width:22px;height:22px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;color:var(--gold)}
+.pack-price-big{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--gold);line-height:1}
+.pack-price-orig{font-size:16px;color:var(--muted);text-decoration:line-through;margin-bottom:5px}
+.pack-save{display:inline-block;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2);color:var(--gold);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:20px;letter-spacing:0.5px}
+.btn-pack{background:var(--gold);color:#000;padding:16px 40px;border-radius:12px;font-weight:800;font-size:15px;text-decoration:none;display:inline-block;transition:transform 0.2s,opacity 0.2s}
+.btn-pack:hover{transform:translateY(-2px)}
+
+/* FAQ */
+.faq-section{padding:80px 5%;max-width:800px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:22px 0;cursor:pointer}
+.faq-q{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:500}
+.faq-a{color:var(--muted);font-size:13px;line-height:1.8;margin-top:12px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-icon{color:var(--accent);font-size:18px;transition:transform 0.2s}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+
+/* FOOTER */
+footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-top:60px;flex-wrap:wrap;gap:20px}
+.foot-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px}
+.foot-logo span{color:var(--accent)}
+.foot-links{display:flex;gap:25px}
+.foot-links a{color:var(--muted);font-size:12px;text-decoration:none;transition:color 0.2s}
+.foot-links a:hover{color:#fff}
+.foot-copy{color:var(--muted);font-size:11px}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border-hover);border-radius:20px;max-width:620px;width:100%;max-height:85vh;overflow-y:auto;padding:40px;position:relative}
+.modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.05);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.modal-close:hover{background:rgba(255,255,255,0.1)}
+.modal-badge{font-size:10px;color:var(--accent);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;margin-bottom:15px}
+.modal-desc{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:25px}
+.modal-features{margin-bottom:25px}
+.modal-features h4{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:12px}
+.modal-feat-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;font-size:13px}
+.modal-feat-icon{color:var(--accent);margin-top:1px;flex-shrink:0}
+.modal-footer{display:flex;align-items:center;justify-content:space-between;padding-top:25px;border-top:1px solid var(--border)}
+.modal-price{font-family:'Bebas Neue',sans-serif;font-size:38px}
+.modal-price span{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);font-weight:400}
+.btn-modal{background:var(--accent);color:#fff;padding:14px 30px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:opacity 0.2s}
+.btn-modal:hover{opacity:0.85}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">REAM<span>X</span></div>
+  <ul class="nav-links">
+    <li><a href="#products">Produits</a></li>
+    <li><a href="#pack">Pack Elite</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#products" class="nav-cta">Commander</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Creative Studio</div>
+  <h1>GET REAMX<br><span class="line2">BE CLASS.</span></h1>
+  <p class="hero-sub">Design graphique premium pour gamers, streamers et créateurs. Logos, banners, bots Discord et bien plus.</p>
+  <div class="hero-btns">
+    <a href="#products" class="btn-primary">Voir les produits</a>
+    <a href="#pack" class="btn-ghost">Pack Elite ✦</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <span class="stat-num">15+</span>
+      <span class="stat-lbl">Clients satisfaits</span>
+    </div>
+    <div>
+      <span class="stat-num">48H</span>
+      <span class="stat-lbl">Livraison max</span>
+    </div>
+    <div>
+      <span class="stat-num">5★</span>
+      <span class="stat-lbl">Note moyenne</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-label">Nos services</div>
+  <h2 class="section-title">CE QU'ON FAIT</h2>
+  <p class="section-sub">Chaque produit est livré avec les sources éditables et un support Discord 24/7.</p>
+
+  <div class="product-grid">
+
+    <!-- BANNER -->
+    <div class="product-card" onclick="openModal('banner')">
+      <div class="product-visual pv-banner">
+        <div class="mock-banner">
+          <div class="mock-banner-img">
+
+          </div>
+          <div class="mock-strip"></div>
+        </div>
+      </div>
+      <div class="card-badge">Popular</div>
+      <div class="card-body">
+        <div class="card-category">Identité visuelle</div>
+        <div class="card-name">Banner Header</div>
+        <div class="card-desc">Banner gaming ou créateur, texte 3D personnalisé, fond sur mesure. Livraison PNG + PSD.</div>
+        <div class="card-features">
+          <span class="feat">Texte 3D</span><span class="feat">PSD inclus</span><span class="feat">PNG HD</span><span class="feat">Fond custom</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">4.99€ <span>/ pièce</span></div>
+          <a class="btn-card">Commander →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGO -->
+    <div class="product-card featured" onclick="openModal('logo')">
+      <div class="product-visual pv-logo">
+        <div class="mock-logo-ring">
+        </div>
+      </div>
+      <div class="card-badge hot">Best Seller</div>
+      <div class="card-body">
+        <div class="card-category">Branding</div>
+        <div class="card-name">Logo 3D / 2D</div>
+        <div class="card-desc">Logo pro animé ou statique. Rendu 3D, effets de lumière, adapté Twitch, YouTube, Discord.</div>
+        <div class="card-features">
+          <span class="feat">3D & 2D</span><span class="feat">Animé</span><span class="feat">MP4 / GIF</span><span class="feat">Livraison rapide</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">9.99€ <span>/ pièce</span></div>
+          <a class="btn-card">Commander →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLOR GRADING -->
+    <div class="product-card" onclick="openModal('color')">
+      <div class="product-visual pv-color">
+        <div class="mock-palette">
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Post-production</div>
+        <div class="card-name">Color Correction</div>
+        <div class="card-desc">Retouche colorimétrique professionnelle pour tes clips, montages, thumbnails ou photos.</div>
+        <div class="card-features">
+          <span class="feat">LUTs perso</span><span class="feat">Cinematic</span><span class="feat">Gaming look</span><span class="feat">Rapide</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">14.99€ <span>/ vidéo</span></div>
+          <a class="btn-card">Commander →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 120 FPS -->
+    <div class="product-card" onclick="openModal('fps')">
+      <div class="product-visual pv-fps">
+        <div class="mock-fps-screen">
+          <div class="mock-fps-overlay">
+          </div>
+        </div>
+      </div>
+      <div class="card-badge new">New</div>
+      <div class="card-body">
+        <div class="card-category">Optimisation</div>
+        <div class="card-name">120 FPS Method</div>
+        <div class="card-desc">Méthode complète pour poster en 120 FPS sur tiktok .</div>
+        <div class="card-features">
+          <span class="feat">PC & Console</span><span class="feat">Guide PDF</span><span class="feat">Support live</span><span class="feat">Garanti</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">10€ <span>/ accès</span></div>
+          <a class="btn-card">Commander →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOT DISCORD -->
+    <div class="product-card" onclick="openModal('bot')">
+      <div class="product-visual pv-bot">
+        <div class="mock-bot-ui"> 
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Discord</div>
+        <div class="card-name">Bot Discord Custom</div>
+        <div class="card-desc">Bot Discord développé sur mesure. Modération, tickets, niveaux, musique, commandes persos (Hebergement non fournis).</div>
+        <div class="card-features">
+          <span class="feat">Sur mesure</span><span class="feat">Commandes custom</span><span class="feat">Mises à jour</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">24.99€ <span>/ bot</span></div>
+          <a class="btn-card">Commander →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT -->
+    <div class="product-card" onclick="openModal('edit')">
+<div class="product-visual pv-pack">        <div class="mock-pack">
+
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Montage</div>
+        <div class="card-name">Clip Edit</div>
+        <div class="card-desc">Montage gaming stylé pour tes highlights. Transitions, effets, musique syncro, format court ou long.</div>
+        <div class="card-features">
+          <span class="feat">After Effect</span><span class="feat">Transitions</span><span class="feat">Sous-titres</span><span class="feat">Livraison sous 48h</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">14.99€ <span>/ clip</span></div>
+          <a class="btn-card">Commander →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PACK ELITE -->
+<section class="pack-section" id="pack">
+  <div class="pack-card">
+    <div>
+      <div class="section-label" style="margin-bottom:12px">Formation Exclusive</div>
+      <div class="pack-title">FORMATION<br><span>AFTER EFFECTS</span><br>BY REAMX</div>
+      <p class="pack-desc">Apprends à monter comme un pro. Je te transmets tout mon savoir-faire, mes presets et mes techniques secrètes.</p>
+      <div class="pack-includes">
+        <div class="pack-item-row"><div class="pack-check">✓</div>Accès à mes **Color Corrections** privées</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Pack de **Shakes** exclusifs (Configurés)</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Mes rendus et paramètres d'export HD</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Workflow complet : du clip brut au rendu final</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Update régulière des nouveaux effets</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Support privé pour tes questions</div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <div class="pack-price-orig">Valeur des presets : 100€+</div>
+      <div class="pack-price-big">49.99€</div>
+      <div class="pack-save">Contenu 100% Unique</div>
+      <br>
+      <a href="#" class="btn-pack">Accéder à la Formation ✦</a>
+      <p style="font-size:12px;color:var(--muted);margin-top:15px">Paiement sécurisé · Livraison via Discord</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="section-label">Questions fréquentes</div>
+  <h2 class="section-title" style="font-size:clamp(30px,5vw,50px);margin-bottom:40px">FAQ</h2>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Comment passer une commande ? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Clique sur "Commander" sur le produit souhaité, tu seras redirigé vers notre Discord où tu peux ouvrir un ticket. Un membre de l'équipe prend en charge ta commande en moins de 2H.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Quel est le délai de livraison ? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Banner & Logo : 12 à 24H. Color Correction : 24H. Bots Discord : 2 à 5 jours selon complexité. Pack Elite : accès immédiat après paiement.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Est-ce que je reçois les fichiers sources ? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Oui, tous nos designs sont livrés avec les fichiers sources éditables (PSD, AI ou fichier projet) sauf mention contraire.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">La méthode 120 FPS fonctionne sur quelle plateforme ? <span class="faq-icon">+</span></div>
+    <div class="faq-a">PC (Windows 10/11), PS5 et Xbox Series. Le guide PDF détaille chaque étape selon ta plateforme. Support live disponible si tu bloques.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Le bot Discord est-il hébergé ? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Oui, le bot est hébergé sur nos serveurs 24/7 sans interruption. Les mises à jour mineures sont gratuites. L'ajout de fonctionnalités majeures peut faire l'objet d'un devis.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">REAM<span>X</span></div>
+  <div class="foot-links">
+    <a href="#">Discord</a>
+    <a href="#">Twitter</a>
+    <a href="#">CGV</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="foot-copy">© 2025 ReamX · Tous droits réservés</div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const products = {
+  banner: {
+    category: 'Identité visuelle',
+    title: 'Banner Header',
+    price: '4.99€',
+    unit: '/ pièce',
+    desc: 'Un banner gaming ou créateur entièrement personnalisé. Texte 3D sur mesure, fond thématique (anime, manga, célébrités, jeux…), fichiers PSD éditables inclus pour que tu puisses modifier à tout moment.',
+    features: [
+      {icon:'✦', label:'Texte 3D rendu', desc:'Effet professionnel avec ombres et lumières'},
+      {icon:'✦', label:'Fichier PSD éditable', desc:'Modifie le texte et les couleurs toi-même'},
+      {icon:'✦', label:'Fond personnalisé', desc:'Anime, manga, IRL, abstrait, gradient…'},
+      {icon:'✦', label:'Export PNG HD', desc:'Résolution Twitch, YouTube ou Discord optimisée'},
+      {icon:'✦', label:'Support Discord 24/7', desc:'On répond en moins d\'une heure'}
+    ]
+  },
+  logo: {
+    category: 'Branding',
+    title: 'Logo 3D / 2D',
+    price: '9.99€',
+    unit: '/ pièce',
+    desc: 'Logo professionnel statique ou animé. Idéal pour ta chaîne YouTube, ton stream Twitch ou ton serveur Discord. Rendu 3D photoréaliste ou design 2D épuré selon tes goûts.',
+    features: [
+      {icon:'✦', label:'3D ou 2D au choix', desc:'Modélisation 3D ou design vectoriel plat'},
+      {icon:'✦', label:'Animation incluse', desc:'Intro animée pour tes streams et vidéos'},
+      {icon:'✦', label:'MP4, MOV, GIF, PNG', desc:'Tous les formats dont tu as besoin'},
+      {icon:'✦', label:'Livraison rapide', desc:'En moins de 24H après validation du brief'},
+      {icon:'✦', label:'Révisions incluses', desc:'Deux aller-retours pour affiner le résultat'}
+    ]
+  },
+  color: {
+    category: 'Post-production',
+    title: 'Color Correction',
+    price: '7.99€',
+    unit: '/ vidéo',
+    desc: 'Retouche colorimétrique pro pour tes clips, montages, thumbnails ou photos de profil. Donne un look cinématique, gaming ou streetwear à ton contenu pour le faire sortir du lot.',
+    features: [
+      {icon:'✦', label:'LUT personnalisée', desc:'Palette colorimétrique adaptée à ton style'},
+      {icon:'✦', label:'Look cinematic', desc:'Étalonnage pro comme les grosses productions'},
+      {icon:'✦', label:'Thumbnails & clips', desc:'Vidéos, images, toute résolution acceptée'},
+      {icon:'✦', label:'Gaming aesthetic', desc:'Vibes dark, néon, orange-teal, pastel…'},
+      {icon:'✦', label:'Fichier LUT fourni', desc:'Applique toi-même le style sur tes futurs clips'}
+    ]
+  },
+  fps: {
+    category: 'Optimisation gaming',
+    title: '120 FPS Method',
+    price: '14.99€',
+    unit: '/ accès',
+    desc: 'Guide complet pour atteindre et stabiliser les 120 FPS stables sur PC et console. Réglages système, paramètres in-game, config réseau — tout ce qu\'il faut pour jouer en smooth absolu.',
+    features: [
+      {icon:'✦', label:'PC Windows 10/11', desc:'Optimisation BIOS, drivers, paramètres Windows'},
+      {icon:'✦', label:'PS5 & Xbox Series', desc:'Modes performance, résolution et FPS stables'},
+      {icon:'✦', label:'Guide PDF complet', desc:'50+ pages avec captures d\'écran étape par étape'},
+      {icon:'✦', label:'Support live', desc:'Session Discord si tu bloques sur une étape'},
+      {icon:'✦', label:'Mises à jour gratuites', desc:'Le guide évolue à chaque update des jeux majeurs'}
+    ]
+  },
+  bot: {
+    category: 'Discord',
+    title: 'Bot Discord Custom',
+    price: '24.99€',
+    unit: '/ bot',
+    desc: 'Bot Discord développé entièrement sur mesure selon tes besoins. Système de tickets, rôles auto, bienvenue personnalisée, modération, musique, commandes slash et bien plus.',
+    features: [
+      {icon:'✦', label:'Développé sur mesure', desc:'Toutes les fonctionnalités que tu veux'},
+      {icon:'✦', label:'Hébergement 24/7', desc:'Uptime garanti sur nos serveurs dédiés'},
+      {icon:'✦', label:'Tickets & modération', desc:'Système de support et modération auto'},
+      {icon:'✦', label:'Niveaux & XP', desc:'Système de progression pour tes membres'},
+      {icon:'✦', label:'Commandes slash', desc:'Interface moderne Discord compatible'}
+    ]
+  },
+  edit: {
+    category: 'Montage vidéo',
+    title: 'Clip Edit',
+    price: '14.99€',
+    unit: '/ clip',
+    desc: 'Montage gaming stylé pour tes highlights, fragmovies ou contenu short-form. Transitions dynamiques, synchro musique, effets visuels et sous-titres inclus.',
+    features: [
+      {icon:'✦', label:'CapCut ou Premiere Pro', desc:'Logiciel adapté à ta demande et au format'},
+      {icon:'✦', label:'Transitions dynamiques', desc:'Cuts rythmés, whip pan, zoom, flash…'},
+      {icon:'✦', label:'Color grading inclus', desc:'Étalonnage gaming pour un rendu pro'},
+      {icon:'✦', label:'Sous-titres stylés', desc:'Texte animé synchronisé sur la voix'},
+      {icon:'✦', label:'Livraison en 24H', desc:'Format Twitch, YouTube Shorts ou TikTok'}
+    ]
+  }
+};
+
+function openModal(id) {
+  const p = products[id];
+  if (!p) return;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-badge">${p.category}</div>
+    <div class="modal-title">${p.title}</div>
+    <p class="modal-desc">${p.desc}</p>
+    <div class="modal-features">
+      <h4>Ce qui est inclus</h4>
+      ${p.features.map(f => `<div class="modal-feat-item"><span class="modal-feat-icon">${f.icon}</span><div><strong style="font-size:13px">${f.label}</strong><br><span style="color:var(--muted);font-size:12px">${f.desc}</span></div></div>`).join('')}
+    </div>
+    <div class="modal-footer">
+      <div class="modal-price">${p.price} <span>${p.unit}</span></div>
+      <a href="#" class="btn-modal">Commander sur Discord</a>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
