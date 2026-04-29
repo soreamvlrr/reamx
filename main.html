@@ -376,25 +376,26 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 <section class="pack-section" id="pack">
   <div class="pack-card">
     <div>
-      <div class="section-label" style="margin-bottom:12px">Formation Exclusive</div>
-      <div class="pack-title">FORMATION<br><span>AFTER EFFECTS</span><br>BY REAMX</div>
-      <p class="pack-desc">Apprends à monter comme un pro. Je te transmets tout mon savoir-faire, mes presets et mes techniques secrètes.</p>
+      <div class="section-label" style="margin-bottom:12px">Offre limitée</div>
+      <div class="pack-title">PACK<br><span>ELITE</span><br>LIFETIME</div>
+      <p class="pack-desc">Accès à vie à tous nos services avec des tarifs exclusifs. Le seul investissement que tu feras jamais pour ton image.</p>
       <div class="pack-includes">
-        <div class="pack-item-row"><div class="pack-check">✓</div>Accès à mes **Color Corrections** privées</div>
-        <div class="pack-item-row"><div class="pack-check">✓</div>Pack de **Shakes** exclusifs (Configurés)</div>
-        <div class="pack-item-row"><div class="pack-check">✓</div>Mes rendus et paramètres d'export HD</div>
-        <div class="pack-item-row"><div class="pack-check">✓</div>Workflow complet : du clip brut au rendu final</div>
-        <div class="pack-item-row"><div class="pack-check">✓</div>Update régulière des nouveaux effets</div>
-        <div class="pack-item-row"><div class="pack-check">✓</div>Support privé pour tes questions</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Banners illimitées (fichiers PSD inclus)</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>2 Logos 3D / 2D par mois</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Color Correction illimitée</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Méthode 120 FPS + mises à jour</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>1 Bot Discord custom inclus</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Support prioritaire 24/7</div>
+        <div class="pack-item-row"><div class="pack-check">✓</div>Accès aux futures nouveautés</div>
       </div>
     </div>
     <div style="text-align:center">
-      <div class="pack-price-orig">Valeur des presets : 100€+</div>
-      <div class="pack-price-big">49.99€</div>
-      <div class="pack-save">Contenu 100% Unique</div>
+      <div class="pack-price-orig">Valeur réelle : 120€+</div>
+      <div class="pack-price-big">44.99€</div>
+      <div class="pack-save">Économise 75€+</div>
       <br>
-      <a href="#" class="btn-pack">Accéder à la Formation ✦</a>
-      <p style="font-size:12px;color:var(--muted);margin-top:15px">Paiement sécurisé · Livraison via Discord</p>
+      <a href="#" class="btn-pack">Prendre le Pack Elite ✦</a>
+      <p style="font-size:12px;color:var(--muted);margin-top:15px">Paiement sécurisé · Accès immédiat</p>
     </div>
   </div>
 </section>
@@ -537,6 +538,10 @@ const products = {
 function openModal(id) {
   const p = products[id];
   if (!p) return;
+
+  // On prépare la clé pour ton API (ex: buy_banner)
+  const serviceKey = 'buy_' + id;
+
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-badge">${p.category}</div>
     <div class="modal-title">${p.title}</div>
@@ -545,25 +550,91 @@ function openModal(id) {
       <h4>Ce qui est inclus</h4>
       ${p.features.map(f => `<div class="modal-feat-item"><span class="modal-feat-icon">${f.icon}</span><div><strong style="font-size:13px">${f.label}</strong><br><span style="color:var(--muted);font-size:12px">${f.desc}</span></div></div>`).join('')}
     </div>
+
+    <div style="margin-bottom: 20px; padding: 15px; background: rgba(88,101,242,0.1); border-radius: 10px; border: 1px solid var(--accent);">
+        <label style="font-size: 11px; color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase;">Ton ID Discord (obligatoire) :</label>
+        <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345" 
+            style="width: 100%; background: #060608; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; outline: none; font-family: 'Space Mono', monospace; font-size: 13px;">
+    </div>
+
     <div class="modal-footer">
       <div class="modal-price">${p.price} <span>${p.unit}</span></div>
-      <a href="#" class="btn-modal">Commander sur Discord</a>
-    </div>
+async function createRemoteTicket(serviceKey) {
+    const userId = document.getElementById('discord_user_id').value;
+    const btn = document.getElementById('btn-order');
+
+    if (!userId || userId.length < 17) {
+        alert("⚠️ Merci d'entrer un ID Discord valide (tu peux le trouver en faisant clic droit sur ton profil Discord > Copier l'identifiant).");
+        return;
+    }
+
+    btn.innerText = "Création du ticket...";
+    btn.disabled = true;
+
+    try {
+        // Utilisation de ton IP Katabump
+        const response = await fetch('http://145.239.65.118:20106/api/external-ticket', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, serviceKey })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("✅ Ton ticket a été ouvert sur Discord !");
+            window.location.href = data.ticketUrl; // Redirection automatique vers le salon
+        } else {
+            alert("❌ Erreur : " + (data.error || "Es-tu sûr d'être sur le serveur Discord ReamX ?"));
+            btn.innerText = "Réessayer";
+            btn.disabled = false;
+        }
+    } catch (error) {
+        console.error(error);
+        alert("🌐 Impossible de joindre le bot. Vérifie qu'il est bien allumé sur Katabump.");
+        btn.innerText = "Ouvrir mon ticket";
+        btn.disabled = false;
+    }
+}    </div>
   `;
   document.getElementById('modal').classList.add('open');
 }
+async function createRemoteTicket(serviceKey) {
+    const userId = document.getElementById('discord_user_id').value;
+    const btn = document.getElementById('btn-order');
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
+    if (!userId || userId.length < 17) {
+        alert("⚠️ Merci d'entrer un ID Discord valide (17-19 chiffres).");
+        return;
+    }
+
+    btn.innerText = "Connexion au bot...";
+    btn.disabled = true;
+
+    try {
+        const response = await fetch('http://localhost:3000/api/external-ticket', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, serviceKey })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("✅ Ticket créé ! Redirection...");
+            window.location.href = data.ticketUrl;
+        } else {
+            alert("❌ Erreur : " + data.error);
+            btn.innerText = "Réessayer";
+            btn.disabled = false;
+        }
+    } catch (error) {
+        alert("🌐 Le bot n'est pas allumé ou l'adresse est incorrecte.");
+        btn.innerText = "Ouvrir mon ticket";
+        btn.disabled = false;
+    }
 }
 
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
 </script>
 </body>
 </html>
