@@ -536,6 +536,11 @@ const products = {
   }
 };
 
+const DISCORD_SUPPORT_URL = 'https://discord.gg/VOTRE_INVITE'; // remplace par ton invite ou ta page de support Discord
+const DISCORD_API_URL = 'http://145.239.65.118:20106/api/external-ticket';
+const DISCORD_API_HTTPS_URL = 'https://145.239.65.118:20106/api/external-ticket'; // remplace si ton backend supporte HTTPS
+const USE_DISCORD_FALLBACK = true;
+
 function openModal(id) {
   const p = products[id];
   if (!p) return;
@@ -556,6 +561,7 @@ function openModal(id) {
         <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345"
             style="width: 100%; background: #060608; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; outline: none; font-family: 'Space Mono', monospace; font-size: 13px;">
         <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;">Copie ton ID utilisateur Discord, pas l'ID du serveur. En mode développeur : clic droit sur ton profil → Copier l'identifiant.</p>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5;">Si l'ouverture automatique échoue, tu peux aussi <a id="discord-fallback-link" href="${DISCORD_SUPPORT_URL}" target="_blank" style="color: var(--accent); text-decoration: underline;">ouvrir mon Discord ici</a>.</p>
     </div>
 
     <div class="modal-footer">
@@ -588,7 +594,7 @@ async function createRemoteTicket(serviceKey) {
 
   btn.innerText = 'Connexion au bot...';
   btn.disabled = true;
-  const ticketUrl = 'http://145.239.65.118:20106/api/external-ticket';
+  const ticketUrl = window.location.protocol === 'https:' ? DISCORD_API_HTTPS_URL : DISCORD_API_URL;
 
   try {
     const response = await fetch(ticketUrl, {
@@ -610,8 +616,13 @@ async function createRemoteTicket(serviceKey) {
     }
   } catch (error) {
     console.error(error);
-    if (window.location.protocol === 'https:') {
-      alert('🌐 Erreur HTTPS : ta page est servie en HTTPS, mais le backend utilise HTTP. Le navigateur bloque la requête. Il faut que le backend soit accessible en HTTPS ou via un proxy sécurisé.');
+    if (window.location.protocol === 'https:' && DISCORD_API_HTTPS_URL === 'https://145.239.65.118:20106/api/external-ticket') {
+      if (USE_DISCORD_FALLBACK && DISCORD_SUPPORT_URL !== 'https://discord.gg/VOTRE_INVITE') {
+        alert('🌐 Erreur HTTPS : le backend n\'est pas accessible en HTTPS. Je te redirige vers Discord directement.');
+        window.open(DISCORD_SUPPORT_URL, '_blank');
+      } else {
+        alert('🌐 Erreur HTTPS : ta page est servie en HTTPS, mais le backend utilise HTTP. Le navigateur bloque la requête. Il faut que le backend soit accessible en HTTPS ou via un proxy sécurisé.');
+      }
     } else {
       alert('🌐 Le bot ne répond pas ou l\'adresse est incorrecte.');
     }
