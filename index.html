@@ -588,16 +588,17 @@ async function createRemoteTicket(serviceKey) {
 
   btn.innerText = 'Connexion au bot...';
   btn.disabled = true;
+  const ticketUrl = 'http://145.239.65.118:20106/api/external-ticket';
 
   try {
-    const response = await fetch('http://145.239.65.118:20106/api/external-ticket', {
+    const response = await fetch(ticketUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, serviceKey })
     });
 
     const data = await response.json();
-    console.log('ticket request', { userId, serviceKey, status: response.status, data });
+    console.log('ticket request', { userId, serviceKey, ticketUrl, status: response.status, data });
 
     if (response.ok) {
       alert('✅ Ticket créé ! Redirection...');
@@ -609,7 +610,11 @@ async function createRemoteTicket(serviceKey) {
     }
   } catch (error) {
     console.error(error);
-    alert('🌐 Le bot ne répond pas ou l\'adresse est incorrecte.');
+    if (window.location.protocol === 'https:') {
+      alert('🌐 Erreur HTTPS : ta page est servie en HTTPS, mais le backend utilise HTTP. Le navigateur bloque la requête. Il faut que le backend soit accessible en HTTPS ou via un proxy sécurisé.');
+    } else {
+      alert('🌐 Le bot ne répond pas ou l\'adresse est incorrecte.');
+    }
     btn.innerText = 'Ouvrir mon ticket';
     btn.disabled = false;
   }
