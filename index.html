@@ -627,13 +627,168 @@ const products = {
   }
 };
 
-const DISCORD_SUPPORT_URL = 'https://discord.gg/nZrJxcgPp7';
-const TICKET_API_URL = 'https://145.239.65.118:20106';
+/* ===================== CONFIG ===================== */
+const DISCORD_CLIENT_ID = '1469158928800813066';
+const BOT_API_URL = 'https://145.239.65.118:20106';
+// Mettre ici l'URL exacte de ton site (sans slash final) pour le redirect OAuth
+const SITE_URL = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
 
+// Scope identify = récupérer l'ID Discord du user, guilds.join = l'ajouter au serveur si besoin
+const OAUTH_REDIRECT = encodeURIComponent(window.location.href.split('?')[0]);
+const OAUTH_URL = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${OAUTH_REDIRECT}&scope=identify`;
+
+// État de session (stocké en mémoire, perdu au reload — normal pour OAuth implicite)
+let discordUser = null; // { id, username, avatar, discriminator }
+let pendingServiceKey = null;
+
+/* ---- Lire le token depuis le hash OAuth (#access_token=...) ---- */
+async function handleOAuthCallback() {
+  const hash = window.location.hash;
+  if (!hash.includes('access_token')) return;
+
+  const params = new URLSearchParams(hash.slice(1));
+  const token = params.get('access_token');
+  if (!token) return;
+
+  // Nettoyer l'URL
+  history.replaceState(null, '', window.location.pathname);
+
+  try {
+    const res = await fetch('https://discord.com/api/users/@me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const user = await res.json();
+    discordUser = { id: user.id, username: user.username, avatar: user.avatar, discriminator: user.discriminator };
+
+    updateNavUser();
+
+    // Si une commande était en attente, reprendre
+    if (pendingServiceKey) {
+      const key = pendingServiceKey;
+      pendingServiceKey = null;
+      await createTicketForUser(key);
+    }
+  } catch (e) {
+    console.error('OAuth error:', e);
+    showToast('❌ Connexion Discord échouée, réessaie.', 'error');
+  }
+}
+
+/* ---- Afficher l'avatar/pseudo dans la nav une fois connecté ---- */
+function updateNavUser() {
+  if (!discordUser) return;
+  const existing = document.getElementById('nav-user');
+  if (existing) existing.remove();
+
+  const avatarUrl = discordUser.avatar
+    ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png?size=32`
+    : `https://cdn.discordapp.com/embed/avatars/0.png`;
+
+  const el = document.createElement('div');
+  el.id = 'nav-user';
+  el.style.cssText = 'display:flex;align-items:center;gap:8px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.3);border-radius:8px;padding:6px 14px;';
+  el.innerHTML = `
+    <img src="${avatarUrl}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
+    <span style="font-size:13px;font-weight:600;color:#fff;">${discordUser.username}</span>
+    <button onclick="disconnectUser()" style="background:none;border:none;color:var(--muted);font-size:11px;padding:0 0 0 4px;">✕</button>
+  `;
+  document.querySelector('nav').appendChild(el);
+}
+
+function disconnectUser() {
+  discordUser = null;
+  const el = document.getElementById('nav-user');
+  if (el) el.remove();
+  showToast('Déconnecté de Discord.', 'info');
+}
+
+/* ---- Toast notifications ---- */
+function showToast(msg, type = 'info') {
+  const existing = document.getElementById('reamx-toast');
+  if (existing) existing.remove();
+
+  const colors = { info: 'var(--accent)', error: '#e74c3c', success: '#2ecc71' };
+  const t = document.createElement('div');
+  t.id = 'reamx-toast';
+  t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid ${colors[type]};color:#fff;padding:14px 24px;border-radius:12px;font-size:13px;z-index:5000;box-shadow:0 4px 30px rgba(0,0,0,0.4);max-width:90vw;text-align:center;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+/* ---- Créer le ticket via l'API du bot ---- */
+async function createTicketForUser(serviceKey) {
+  const btn = document.getElementById('btn-order');
+  if (btn) { btn.textContent = 'Création du ticket…'; btn.disabled = true; }
+
+  try {
+    const res = await fetch(`${BOT_API_URL}/api/external-ticket`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: discordUser.id, serviceKey })
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.ticketUrl) {
+      closeModal();
+      showToast('✅ Ticket créé ! Vérifie ton Discord.', 'success');
+      setTimeout(() => window.open(data.ticketUrl, '_blank'), 800);
+    } else {
+      const msg = data.error || 'Erreur lors de la création du ticket.';
+      showToast('❌ ' + msg, 'error');
+      if (btn) { btn.textContent = 'Commander →'; btn.disabled = false; }
+    }
+  } catch (e) {
+    console.error(e);
+    showToast('❌ Impossible de joindre le bot. Réessaie.', 'error');
+    if (btn) { btn.textContent = 'Commander →'; btn.disabled = false; }
+  }
+}
+
+/* ---- Bouton "Commander" dans le modal ---- */
+async function handleOrder(serviceKey) {
+  // Déjà connecté → créer le ticket direct
+  if (discordUser) {
+    await createTicketForUser(serviceKey);
+    return;
+  }
+
+  // Pas connecté → sauvegarder le service et lancer OAuth
+  pendingServiceKey = serviceKey;
+  // Stocker dans sessionStorage pour survivre au redirect
+  sessionStorage.setItem('pendingServiceKey', serviceKey);
+  window.location.href = OAUTH_URL;
+}
+
+/* ---- Restaurer le service key après redirect OAuth ---- */
+function restorePendingKey() {
+  const saved = sessionStorage.getItem('pendingServiceKey');
+  if (saved) {
+    pendingServiceKey = saved;
+    sessionStorage.removeItem('pendingServiceKey');
+  }
+}
+
+/* ---- Ouvrir le modal produit ---- */
 function openModal(id) {
   const p = products[id];
   if (!p) return;
   const serviceKey = p.ticketKey || 'buy_' + id;
+
+  const connectedBlock = discordUser
+    ? `<div style="display:flex;align-items:center;gap:10px;background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-radius:10px;padding:12px 16px;margin-bottom:20px;">
+        <img src="https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png?size=32" style="width:28px;height:28px;border-radius:50%;" onerror="this.style.display='none'">
+        <div>
+          <div style="font-size:12px;color:rgba(46,204,113,0.9);font-weight:600;">Connecté en tant que</div>
+          <div style="font-size:14px;font-weight:700;">${discordUser.username}</div>
+        </div>
+       </div>`
+    : `<div style="display:flex;align-items:center;gap:10px;background:rgba(88,101,242,0.08);border:1px solid rgba(88,101,242,0.25);border-radius:10px;padding:12px 16px;margin-bottom:20px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;opacity:0.7"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.89 19.89 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" fill="#5865F2"/></svg>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5;">La commande nécessite de <strong style="color:#fff;">te connecter avec Discord</strong>.<br>Le ticket sera créé automatiquement dans notre serveur.</div>
+       </div>`;
+
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-badge">${p.category}</div>
     <div class="modal-title">${p.title}</div>
@@ -642,28 +797,16 @@ function openModal(id) {
       <h4>Ce qui est inclus</h4>
       ${p.features.map(f => `<div class="modal-feat-item"><span class="modal-feat-icon">${f.icon}</span><div><strong style="font-size:13px">${f.label}</strong><br><span style="color:var(--muted);font-size:12px">${f.desc}</span></div></div>`).join('')}
     </div>
-    <div style="margin-bottom:20px;padding:15px;background:rgba(88,101,242,0.1);border-radius:10px;border:1px solid var(--accent);">
-      <label style="font-size:11px;color:var(--accent);font-weight:bold;display:block;margin-bottom:8px;text-transform:uppercase;">Ton ID Discord (obligatoire) :</label>
-      <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345"
-        style="width:100%;background:#060608;border:1px solid var(--border);color:white;padding:12px;border-radius:8px;outline:none;font-family:'Space Mono',monospace;font-size:13px;">
-      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;">Copie ton ID utilisateur Discord, pas l'ID du serveur. En mode développeur : clic droit sur ton profil → Copier l'identifiant.</p>
-      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;"><strong>⏰ Important :</strong> Un code sera généré avec <strong>2 minutes d'expiration</strong>. Utilise la commande Discord dans ce délai !</p>
-      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;">Si l'ouverture automatique échoue, tu peux aussi <a id="discord-fallback-link" href="${DISCORD_SUPPORT_URL}" target="_blank" style="color:var(--accent);text-decoration:underline;">ouvrir mon Discord ici</a>.</p>
-    </div>
+    ${connectedBlock}
     <div class="modal-footer">
       <div class="modal-price">${p.price} <span>${p.unit}</span></div>
-    </div>
-    <div style="margin-top:20px;display:flex;justify-content:center;">
-      <button id="btn-order" class="btn-modal" onclick="createRemoteTicket('${serviceKey}')">Générer le code</button>
+      <button id="btn-order" class="btn-modal" onclick="handleOrder('${serviceKey}')">
+        ${discordUser ? 'Commander →' : '🔗 Connexion Discord →'}
+      </button>
     </div>
   `;
+
   document.getElementById('modal').classList.add('open');
-  setTimeout(() => {
-    document.querySelectorAll('.modal a, .modal button, .modal input').forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-  }, 50);
 }
 
 function closeModal() {
@@ -674,41 +817,9 @@ function toggleFaq(item) {
   item.classList.toggle('open');
 }
 
-async function createRemoteTicket(serviceKey) {
-  const userIdInput = document.getElementById('discord_user_id');
-  const userId = userIdInput ? userIdInput.value.trim() : '';
-  const btn = document.getElementById('btn-order');
-  if (!userId || userId.length < 17) {
-    alert('⚠️ Merci d\'entrer un ID Discord valide (17-19 chiffres).');
-    return;
-  }
-  if (!TICKET_API_URL || TICKET_API_URL.includes('ton-bot.example.com')) {
-    alert('⚠️ L\'URL de ton bot n\'est pas configurée. Je te redirige vers Discord pour ouvrir le ticket manuellement.');
-    window.open(DISCORD_SUPPORT_URL, '_blank');
-    return;
-  }
-  if (btn) { btn.innerText = 'Génération du code...'; btn.disabled = true; }
-  try {
-    const response = await fetch(TICKET_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, serviceKey })
-    });
-    const data = await response.json();
-    if (response.ok && data.code) {
-      alert(`✅ Code généré : **${data.code}**\n\n⏰ Valide 2 minutes\n\nUtilise cette commande Discord :\n/redeem-ticket code:${data.code}\n\nLe code a été copié !`);
-      navigator.clipboard.writeText(`/redeem-ticket code:${data.code}`).catch(() => {});
-      return;
-    }
-    const message = data.error || data.message || 'Erreur lors de la génération du code.';
-    alert('❌ ' + message + '\nSi besoin, rejoins le Discord manuellement.');
-  } catch (error) {
-    alert('🌐 Impossible de contacter ton bot. Je te redirige vers Discord pour ouvrir le ticket manuellement.');
-    window.open(DISCORD_SUPPORT_URL, '_blank');
-  } finally {
-    if (btn) { btn.innerText = 'Ouvrir mon ticket'; btn.disabled = false; }
-  }
-}
+// Lancer à l'init
+restorePendingKey();
+handleOAuthCallback();
 
 </script>
 </body>
