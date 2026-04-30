@@ -8,54 +8,27 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
---bg:#060608;--surface:#0d0d12;--border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.15);
---text:#f0f0f0;--muted:#666;--accent:#5865F2;--accent2:#EB459E;--gold:#FFD700;
+  --bg:#060608;--surface:#0d0d12;--border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.15);
+  --text:#f0f0f0;--muted:#666;--accent:#5865F2;--accent2:#EB459E;--gold:#FFD700;--green:#2ecc71;
 }
 
 /* CURSOR CUSTOM */
-#cursor-glow {
-  position: fixed;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(88,101,242,0.18) 0%, rgba(88,101,242,0.06) 40%, transparent 70%);
-  filter: blur(18px);
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
-}
-body.cursor-hover #cursor-glow {
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(88,101,242,0.28) 0%, rgba(235,69,158,0.1) 40%, transparent 70%);
-}
-
+#cursor-glow{position:fixed;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(88,101,242,0.18) 0%,rgba(88,101,242,0.06) 40%,transparent 70%);filter:blur(18px);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s}
+body.cursor-hover #cursor-glow{width:260px;height:260px;background:radial-gradient(circle,rgba(88,101,242,0.28) 0%,rgba(235,69,158,0.1) 40%,transparent 70%)}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
-
-/* NOISE OVERLAY */
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4;pointer-events:none;z-index:0}
-
-/* PARTICLE CANVAS */
-#particle-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.7;
-}
-
+#particle-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.7}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 5%;border-bottom:1px solid var(--border);background:rgba(6,6,8,0.85);backdrop-filter:blur(20px)}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#fff}
 .nav-logo span{color:var(--accent)}
 .nav-links{display:flex;gap:30px;list-style:none}
-.nav-links a{color:var(--muted);font-size:13px;font-weight:500;text-decoration:none;letter-spacing:0.5px;transition:color 0.2s}
+.nav-links a{color:var(--muted);font-size:13px;font-weight:500;text-decoration:none;letter-spacing:.5px;transition:color .2s}
 .nav-links a:hover{color:#fff}
 .nav-right{display:flex;align-items:center;gap:10px}
-.nav-cta{background:var(--accent);color:#fff;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.3px;transition:opacity 0.2s;white-space:nowrap}
-.nav-cta:hover{opacity:0.85}
+.nav-cta{background:var(--accent);color:#fff;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}
+.nav-cta:hover{opacity:.85}
 #nav-user{white-space:nowrap}
 
 /* HERO */
@@ -63,55 +36,34 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(88,101,242,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.3);border-radius:20px;padding:6px 16px;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--accent);margin-bottom:30px;text-transform:uppercase}
 .hero-tag::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent)}
-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,12vw,140px);line-height:0.9;letter-spacing:2px;margin-bottom:20px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,12vw,140px);line-height:.9;letter-spacing:2px;margin-bottom:20px}
 h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
 .hero-sub{color:var(--muted);font-size:16px;max-width:460px;line-height:1.7;margin-bottom:45px}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-.btn-primary{background:#fff;color:#000;padding:14px 32px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:transform 0.2s,opacity 0.2s}
+.btn-primary{background:#fff;color:#000;padding:14px 32px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:transform .2s,opacity .2s}
 .btn-primary:hover{transform:translateY(-2px)}
-.btn-ghost{background:transparent;color:#fff;border:1px solid var(--border-hover);padding:14px 32px;border-radius:10px;font-weight:600;font-size:14px;text-decoration:none;transition:border-color 0.2s}
+.btn-ghost{background:transparent;color:#fff;border:1px solid var(--border-hover);padding:14px 32px;border-radius:10px;font-weight:600;font-size:14px;text-decoration:none;transition:border-color .2s}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.4)}
 .hero-stats{display:flex;gap:50px;margin-top:70px;padding-top:40px;border-top:1px solid var(--border)}
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;display:block}
 .stat-lbl{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
 
-/* PRODUCTS SECTION */
+/* PRODUCTS */
 .products{padding:100px 5%;max-width:1200px;margin:0 auto;position:relative;z-index:2}
 .section-label{font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:12px}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,70px);margin-bottom:10px;line-height:1}
 .section-sub{color:var(--muted);font-size:14px;margin-bottom:60px}
-
-/* PRODUCT CARD */
 .product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
-.product-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all 0.3s;position:relative}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all .3s;position:relative;cursor:pointer}
 .product-card:hover{border-color:var(--border-hover);transform:translateY(-6px)}
 .product-card.featured{border-color:rgba(88,101,242,0.4);box-shadow:0 0 40px rgba(88,101,242,0.08)}
-
-.product-visual{height:220px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden}
+.product-visual{height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .pv-banner{background-image:url('https://i.postimg.cc/dVJtqNkJ/banner.png');background-size:cover;background-position:center}
 .pv-logo{background-image:url('https://i.postimg.cc/L5ZFTLJv/0c5ba7c3-b661-462b-96ad-57c4f8adba30.png');background-size:cover;background-position:center}
-.pv-color{background-image:url('https://i.postimg.cc/3RhdvrWG/image.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
-.pv-fps{background-image:url('https://i.postimg.cc/28tdBvYW/4a1ba393-81c4-4685-8cb3-6a9886e88f09.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
-.pv-bot{background-image:url('https://i.postimg.cc/BnG6yQBZ/image.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
-.pv-pack{background-image:url('https://i.postimg.cc/ZRqFdLWR/image.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
-
-.mock-banner-img{width:100%;height:100%;background:linear-gradient(90deg,rgba(88,101,242,0.3),rgba(235,69,158,0.3));display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
-.mock-banner-text{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:#fff}
-.mock-banner-sub{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.5)}
-.mock-logo-inner{font-family:'Bebas Neue',sans-serif;font-size:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.mock-palette{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:75%}
-.mock-swatch{height:35px;border-radius:6px}
-.mock-fps-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px}
-.fps-counter{font-family:'Space Mono',monospace;font-size:22px;color:#00ff88;text-shadow:0 0 10px rgba(0,255,136,0.5)}
-.fps-label{font-size:8px;color:rgba(0,255,136,0.6);letter-spacing:3px}
-.fps-bars{position:absolute;bottom:10px;left:10px;display:flex;gap:3px;align-items:flex-end}
-.fps-bar{width:4px;background:#00ff88;border-radius:2px;opacity:0.6}
-.bot-msg{background:rgba(88,101,242,0.2);border-radius:8px;padding:6px 10px;font-size:9px;color:rgba(255,255,255,0.7);align-self:flex-start;max-width:80%}
-.bot-msg.user{background:rgba(235,69,158,0.2);align-self:flex-end}
-.bot-cmd{background:#1a1a2e;border-radius:6px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:8px;color:var(--accent)}
-.pack-item{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:10px;color:rgba(255,255,255,0.6);font-weight:600;letter-spacing:0.5px}
-
-/* CARD BODY */
+.pv-color{background-image:url('https://i.postimg.cc/3RhdvrWG/image.png');background-size:cover;background-position:center;width:100%;height:300px}
+.pv-fps{background-image:url('https://i.postimg.cc/28tdBvYW/4a1ba393-81c4-4685-8cb3-6a9886e88f09.png');background-size:cover;background-position:center;width:100%;height:300px}
+.pv-bot{background-image:url('https://i.postimg.cc/BnG6yQBZ/image.png');background-size:cover;background-position:center;width:100%;height:300px}
+.pv-pack{background-image:url('https://i.postimg.cc/ZRqFdLWR/image.png');background-size:cover;background-position:center;width:100%;height:300px}
 .card-badge{position:absolute;top:15px;right:15px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
 .card-badge.hot{background:var(--accent2)}
 .card-badge.new{background:linear-gradient(135deg,var(--accent),var(--accent2))}
@@ -124,13 +76,11 @@ h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
 .card-footer{display:flex;align-items:center;justify-content:space-between}
 .card-price{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1}
 .card-price span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--muted)}
-.card-price.lifetime{color:var(--gold)}
-.btn-card{background:rgba(88,101,242,0.15);border:1px solid rgba(88,101,242,0.3);color:var(--accent);padding:11px 22px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:0.3px;display:inline-block}
-.btn-card:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.featured .btn-card{background:var(--accent);color:#fff;border-color:var(--accent)}
-.featured .btn-card:hover{opacity:0.85}
+.btn-card{background:rgba(88,101,242,0.15);border:1px solid rgba(88,101,242,0.3);color:var(--accent);padding:11px 22px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;letter-spacing:.3px;display:inline-block}
+.btn-card:hover,.featured .btn-card{background:var(--accent);color:#fff;border-color:var(--accent)}
+.featured .btn-card:hover{opacity:.85}
 
-/* PACK SECTION */
+/* PACK */
 .pack-section{padding:80px 5%;max-width:1200px;margin:0 auto;position:relative;z-index:2}
 .pack-card{background:var(--surface);border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:50px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;position:relative;overflow:hidden}
 .pack-card::before{content:'ELITE';position:absolute;top:-20px;right:-10px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(255,215,0,0.02);pointer-events:none}
@@ -142,17 +92,17 @@ h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
 .pack-check{width:22px;height:22px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;color:var(--gold)}
 .pack-price-big{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--gold);line-height:1}
 .pack-price-orig{font-size:16px;color:var(--muted);text-decoration:line-through;margin-bottom:5px}
-.pack-save{display:inline-block;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2);color:var(--gold);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:20px;letter-spacing:0.5px}
-.btn-pack{background:var(--gold);color:#000;padding:16px 40px;border-radius:12px;font-weight:800;font-size:15px;text-decoration:none;display:inline-block;transition:transform 0.2s,opacity 0.2s}
+.pack-save{display:inline-block;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2);color:var(--gold);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:20px;letter-spacing:.5px}
+.btn-pack{background:var(--gold);color:#000;padding:16px 40px;border-radius:12px;font-weight:800;font-size:15px;text-decoration:none;display:inline-block;transition:transform .2s,opacity .2s}
 .btn-pack:hover{transform:translateY(-2px)}
 
 /* FAQ */
 .faq-section{padding:80px 5%;max-width:800px;margin:0 auto;position:relative;z-index:2}
-.faq-item{border-bottom:1px solid var(--border);padding:22px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:22px 0;cursor:pointer}
 .faq-q{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:500}
 .faq-a{color:var(--muted);font-size:13px;line-height:1.8;margin-top:12px;display:none}
 .faq-item.open .faq-a{display:block}
-.faq-icon{color:var(--accent);font-size:18px;transition:transform 0.2s}
+.faq-icon{color:var(--accent);font-size:18px;transition:transform .2s}
 .faq-item.open .faq-icon{transform:rotate(45deg)}
 
 /* FOOTER */
@@ -160,15 +110,15 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 .foot-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px}
 .foot-logo span{color:var(--accent)}
 .foot-links{display:flex;gap:25px}
-.foot-links a{color:var(--muted);font-size:12px;text-decoration:none;transition:color 0.2s}
+.foot-links a{color:var(--muted);font-size:12px;text-decoration:none;transition:color .2s}
 .foot-links a:hover{color:#fff}
 .foot-copy{color:var(--muted);font-size:11px}
 
-/* MODAL */
+/* MODAL PRODUIT */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border-hover);border-radius:20px;max-width:620px;width:100%;max-height:85vh;overflow-y:auto;padding:40px;position:relative}
-.modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.05);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.05);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .modal-close:hover{background:rgba(255,255,255,0.1)}
 .modal-badge{font-size:10px;color:var(--accent);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;margin-bottom:15px}
@@ -180,16 +130,233 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 .modal-footer{display:flex;align-items:center;justify-content:space-between;padding-top:25px;border-top:1px solid var(--border)}
 .modal-price{font-family:'Bebas Neue',sans-serif;font-size:38px}
 .modal-price span{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);font-weight:400}
-.btn-modal{background:var(--accent);color:#fff;padding:14px 30px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:none;transition:opacity 0.2s}
-.btn-modal:hover{opacity:0.85}
+.btn-modal{background:var(--accent);color:#fff;padding:14px 30px;border-radius:10px;font-weight:700;font-size:14px;border:none;cursor:pointer;transition:opacity .2s}
+.btn-modal:hover{opacity:.85}
+
+/* ══════════════════════════════════════════
+   SYSTÈME CHAT / TICKETS
+   ══════════════════════════════════════════ */
+
+/* ── Bulle client ── */
+#chat-bubble{
+  position:fixed;bottom:28px;right:28px;z-index:500;
+  display:none;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;cursor:pointer;
+  box-shadow:0 4px 24px rgba(88,101,242,0.45);
+  transition:transform .2s,box-shadow .2s;
+  align-items:center;justify-content:center;
+}
+#chat-bubble:hover{transform:scale(1.08);box-shadow:0 6px 32px rgba(88,101,242,0.65)}
+#chat-bubble svg{pointer-events:none}
+#chat-notif{
+  position:absolute;top:-4px;right:-4px;
+  min-width:18px;height:18px;
+  background:var(--accent2);border-radius:9px;
+  font-size:10px;font-weight:700;color:#fff;
+  display:none;align-items:center;justify-content:center;
+  border:2px solid var(--bg);padding:0 4px;
+}
+
+/* ── Fenêtre chat client ── */
+#chat-window{
+  position:fixed;bottom:96px;right:28px;z-index:500;
+  width:360px;max-height:540px;
+  background:var(--surface);
+  border:1px solid rgba(88,101,242,0.35);
+  border-radius:20px;
+  display:none;flex-direction:column;
+  box-shadow:0 20px 70px rgba(0,0,0,0.7);
+  overflow:hidden;
+}
+#chat-window.open{display:flex;animation:slideUp .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+
+/* Header chat */
+#chat-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  background:rgba(88,101,242,0.1);
+  border-bottom:1px solid rgba(88,101,242,0.2);
+  flex-shrink:0;
+}
+.chat-hdr-left{display:flex;align-items:center;gap:10px}
+.chat-hdr-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.chat-hdr-avatar img{width:100%;height:100%;object-fit:cover}
+.chat-hdr-info{display:flex;flex-direction:column}
+.chat-hdr-name{font-size:13px;font-weight:700;color:#fff}
+.chat-hdr-status{font-size:10px;color:var(--green);display:flex;align-items:center;gap:4px}
+.chat-hdr-status::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px rgba(46,204,113,.6)}
+.chat-close-btn{background:rgba(255,255,255,0.05);border:none;color:var(--muted);width:28px;height:28px;border-radius:50%;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;font-size:13px}
+.chat-close-btn:hover{background:rgba(255,255,255,0.12);color:#fff}
+
+/* Tabs tickets */
+#chat-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.chat-tab{flex:1;padding:10px;font-size:12px;font-weight:600;color:var(--muted);text-align:center;cursor:pointer;transition:all .2s;border:none;background:none;position:relative}
+.chat-tab.active{color:var(--accent)}
+.chat-tab.active::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--accent);border-radius:2px}
+
+/* Liste tickets */
+#ticket-list{flex:1;overflow-y:auto;padding:8px}
+#ticket-list::-webkit-scrollbar{width:3px}
+#ticket-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+.ticket-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:12px;
+  cursor:pointer;transition:background .15s;
+  border:1px solid transparent;margin-bottom:4px;
+}
+.ticket-item:hover{background:rgba(255,255,255,0.04);border-color:var(--border)}
+.ticket-item.active{background:rgba(88,101,242,0.1);border-color:rgba(88,101,242,0.3)}
+.ticket-item.closed{opacity:.5}
+.ticket-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ticket-icon.open-t{background:rgba(88,101,242,0.15)}
+.ticket-icon.closed-t{background:rgba(255,255,255,0.05)}
+.ticket-info{flex:1;min-width:0}
+.ticket-name{font-size:12px;font-weight:700;color:#fff}
+.ticket-last{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ticket-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0}
+.ticket-badge.open-b{background:rgba(88,101,242,0.2);color:var(--accent)}
+.ticket-badge.closed-b{background:rgba(255,255,255,0.06);color:var(--muted)}
+.ticket-unread{background:var(--accent2);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:none;align-items:center;justify-content:center;padding:0 4px}
+.ticket-unread.show{display:flex}
+.ticket-empty{padding:30px 16px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
+
+/* Vue messages ticket */
+#ticket-chat-view{display:none;flex-direction:column;flex:1;overflow:hidden}
+#ticket-chat-back{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;color:var(--muted);font-size:12px;transition:color .2s;flex-shrink:0}
+#ticket-chat-back:hover{color:#fff}
+#ticket-chat-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tch-info{display:flex;flex-direction:column}
+.tch-name{font-size:14px;font-weight:700;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px}
+.tch-status{font-size:10px;color:var(--muted)}
+.tch-status.open-s{color:var(--green)}
+
+#ticket-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+#ticket-messages::-webkit-scrollbar{width:3px}
+#ticket-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px}
+
+.msg-row{display:flex;flex-direction:column;max-width:82%;gap:2px}
+.msg-row.me{align-self:flex-end}
+.msg-row.them{align-self:flex-start}
+.msg-row.sys{align-self:center;max-width:100%}
+.msg-bubble{padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.55;word-break:break-word}
+.msg-row.me .msg-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg-row.them .msg-bubble{background:rgba(255,255,255,0.07);color:#e0e0e0;border-bottom-left-radius:4px}
+.msg-row.sys .msg-bubble{background:transparent;color:var(--muted);font-size:11px;text-align:center;padding:2px 0}
+.msg-meta{font-size:10px;color:var(--muted);padding:0 2px}
+.msg-row.me .msg-meta{text-align:right}
+
+/* Typing */
+#chat-typing{display:none;align-items:center;gap:5px;padding:0 14px 8px;font-size:11px;color:var(--muted)}
+#chat-typing .dots{display:flex;gap:3px}
+#chat-typing .dots i{width:5px;height:5px;background:var(--muted);border-radius:50%;animation:dot 1s infinite;font-style:normal}
+#chat-typing .dots i:nth-child(2){animation-delay:.15s}
+#chat-typing .dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+
+/* Input zone */
+#ticket-input-area{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0}
+#ticket-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 13px;outline:none;transition:border-color .2s;resize:none;max-height:90px;min-height:38px}
+#ticket-input:focus{border-color:rgba(88,101,242,0.5)}
+#ticket-input::placeholder{color:var(--muted)}
+#ticket-send{width:36px;height:36px;border-radius:10px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .15s;flex-shrink:0}
+#ticket-send:hover{opacity:.85;transform:scale(1.05)}
+.closed-banner{padding:10px 14px;background:rgba(255,255,255,0.03);border-top:1px solid var(--border);font-size:12px;color:var(--muted);text-align:center;flex-shrink:0}
+
+/* ══ ADMIN PANEL ══ */
+#admin-bubble{
+  position:fixed;bottom:28px;left:28px;z-index:500;
+  display:none;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent2),#c0392b);
+  border:none;cursor:pointer;
+  box-shadow:0 4px 24px rgba(235,69,158,0.45);
+  transition:transform .2s;
+  align-items:center;justify-content:center;
+}
+#admin-bubble:hover{transform:scale(1.08)}
+#admin-notif{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;background:#e74c3c;border-radius:9px;font-size:10px;font-weight:700;color:#fff;display:none;align-items:center;justify-content:center;border:2px solid var(--bg);padding:0 4px}
+
+#admin-panel{
+  position:fixed;bottom:96px;left:28px;z-index:500;
+  width:400px;max-height:580px;
+  background:var(--surface);
+  border:1px solid rgba(235,69,158,0.35);
+  border-radius:20px;
+  display:none;flex-direction:column;
+  box-shadow:0 20px 70px rgba(0,0,0,0.7);
+  overflow:hidden;
+}
+#admin-panel.open{display:flex;animation:slideUp .25s cubic-bezier(.34,1.56,.64,1)}
+
+#admin-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  background:rgba(235,69,158,0.1);
+  border-bottom:1px solid rgba(235,69,158,0.2);
+  flex-shrink:0;
+}
+.admin-title-txt{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--accent2)}
+.admin-conv-count{background:var(--accent2);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+
+/* Tabs admin */
+#admin-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.admin-tab{flex:1;padding:10px;font-size:12px;font-weight:600;color:var(--muted);text-align:center;cursor:pointer;transition:all .2s;border:none;background:none;position:relative}
+.admin-tab.active{color:var(--accent2)}
+.admin-tab.active::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--accent2);border-radius:2px}
+
+/* Liste conversations admin */
+#admin-conv-list{flex:1;overflow-y:auto;padding:8px}
+#admin-conv-list::-webkit-scrollbar{width:3px}
+#admin-conv-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+.admin-conv-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:background .15s;border:1px solid transparent;margin-bottom:4px;
+}
+.admin-conv-item:hover{background:rgba(255,255,255,0.04);border-color:var(--border)}
+.admin-conv-item.active{background:rgba(235,69,158,0.1);border-color:rgba(235,69,158,0.3)}
+.admin-conv-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;overflow:hidden}
+.admin-conv-avatar img{width:100%;height:100%;object-fit:cover}
+.admin-conv-info{flex:1;min-width:0}
+.admin-conv-name{font-size:13px;font-weight:600;color:#fff}
+.admin-conv-last{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-conv-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.admin-unread{background:var(--accent2);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:none;align-items:center;justify-content:center;padding:0 4px}
+.admin-unread.show{display:flex}
+.admin-ticket-status{font-size:9px;padding:2px 6px;border-radius:6px}
+.admin-ticket-status.open-s{background:rgba(88,101,242,0.2);color:var(--accent)}
+.admin-ticket-status.closed-s{background:rgba(255,255,255,0.05);color:var(--muted)}
+
+/* Vue chat admin */
+#admin-chat-view{display:none;flex-direction:column;flex:1;overflow:hidden}
+#admin-back{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;color:var(--muted);font-size:12px;transition:color .2s;flex-shrink:0}
+#admin-back:hover{color:#fff}
+#admin-chat-header{padding:10px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.admin-chat-user{display:flex;flex-direction:column}
+.admin-chat-username{font-size:14px;font-weight:700;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px}
+.admin-chat-ticket{font-size:11px;color:var(--muted)}
+.btn-close-ticket{background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.4);color:#e74c3c;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-close-ticket:hover{background:rgba(231,76,60,0.3)}
+.btn-closed-label{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700}
+
+#admin-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+#admin-messages::-webkit-scrollbar{width:3px}
+#admin-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px}
+
+#admin-input-area{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0}
+#admin-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 13px;outline:none;transition:border-color .2s;resize:none}
+#admin-input:focus{border-color:rgba(235,69,158,0.5)}
+#admin-input::placeholder{color:var(--muted)}
+#admin-send{width:36px;height:36px;border-radius:10px;background:var(--accent2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .2s;flex-shrink:0}
+#admin-send:hover{opacity:.8}
 </style>
 </head>
 <body>
 
-<!-- CURSOR GLOW -->
 <div id="cursor-glow"></div>
-
-<!-- PARTICLE CANVAS -->
 <canvas id="particle-canvas"></canvas>
 
 <nav>
@@ -215,18 +382,9 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
     <a href="#pack" class="btn-ghost">Pack Elite ✦</a>
   </div>
   <div class="hero-stats">
-    <div>
-      <span class="stat-num">15+</span>
-      <span class="stat-lbl">Clients satisfaits</span>
-    </div>
-    <div>
-      <span class="stat-num">48H</span>
-      <span class="stat-lbl">Livraison max</span>
-    </div>
-    <div>
-      <span class="stat-num">5★</span>
-      <span class="stat-lbl">Note moyenne</span>
-    </div>
+    <div><span class="stat-num">15+</span><span class="stat-lbl">Clients satisfaits</span></div>
+    <div><span class="stat-num">48H</span><span class="stat-lbl">Livraison max</span></div>
+    <div><span class="stat-num">5★</span><span class="stat-lbl">Note moyenne</span></div>
   </div>
 </section>
 
@@ -235,110 +393,70 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
   <div class="section-label">Nos services</div>
   <h2 class="section-title">CE QU'ON FAIT</h2>
   <p class="section-sub">Chaque produit est livré avec les sources éditables et un support Discord 24/7.</p>
-
   <div class="product-grid">
-
     <div class="product-card" onclick="openModal('banner')">
-      <div class="product-visual pv-banner">
-        <div class="mock-banner"><div class="mock-banner-img"></div><div class="mock-strip"></div></div>
-      </div>
+      <div class="product-visual pv-banner"></div>
       <div class="card-badge">Popular</div>
       <div class="card-body">
         <div class="card-category">Identité visuelle</div>
         <div class="card-name">Banner Header</div>
         <div class="card-desc">Banner gaming ou créateur, texte 3D personnalisé, fond sur mesure. Livraison PNG + PSD.</div>
-        <div class="card-features">
-          <span class="feat">Texte 3D</span><span class="feat">PSD inclus</span><span class="feat">PNG HD</span><span class="feat">Fond custom</span>
-        </div>
-        <div class="card-footer">
-          <div class="card-price">4.99€ <span>/ pièce</span></div>
-          <a class="btn-card">Commander →</a>
-        </div>
+        <div class="card-features"><span class="feat">Texte 3D</span><span class="feat">PSD inclus</span><span class="feat">PNG HD</span><span class="feat">Fond custom</span></div>
+        <div class="card-footer"><div class="card-price">4.99€ <span>/ pièce</span></div><a class="btn-card">Commander →</a></div>
       </div>
     </div>
-
     <div class="product-card featured" onclick="openModal('logo')">
-      <div class="product-visual pv-logo"><div class="mock-logo-ring"></div></div>
+      <div class="product-visual pv-logo"></div>
       <div class="card-badge hot">Best Seller</div>
       <div class="card-body">
         <div class="card-category">Branding</div>
         <div class="card-name">Logo 3D / 2D</div>
         <div class="card-desc">Logo pro animé ou statique. Rendu 3D, effets de lumière, adapté Twitch, YouTube, Discord.</div>
-        <div class="card-features">
-          <span class="feat">3D & 2D</span><span class="feat">Animé</span><span class="feat">MP4 / GIF</span><span class="feat">Livraison rapide</span>
-        </div>
-        <div class="card-footer">
-          <div class="card-price">9.99€ <span>/ pièce</span></div>
-          <a class="btn-card">Commander →</a>
-        </div>
+        <div class="card-features"><span class="feat">3D & 2D</span><span class="feat">Animé</span><span class="feat">MP4 / GIF</span><span class="feat">Livraison rapide</span></div>
+        <div class="card-footer"><div class="card-price">9.99€ <span>/ pièce</span></div><a class="btn-card">Commander →</a></div>
       </div>
     </div>
-
     <div class="product-card" onclick="openModal('color')">
-      <div class="product-visual pv-color"><div class="mock-palette"></div></div>
+      <div class="product-visual pv-color"></div>
       <div class="card-body">
         <div class="card-category">Post-production</div>
         <div class="card-name">Color Correction</div>
         <div class="card-desc">Retouche colorimétrique professionnelle pour tes clips, montages, thumbnails ou photos.</div>
-        <div class="card-features">
-          <span class="feat">LUTs perso</span><span class="feat">Cinematic</span><span class="feat">Gaming look</span><span class="feat">Rapide</span>
-        </div>
-        <div class="card-footer">
-          <div class="card-price">14.99€ <span>/ vidéo</span></div>
-          <a class="btn-card">Commander →</a>
-        </div>
+        <div class="card-features"><span class="feat">LUTs perso</span><span class="feat">Cinematic</span><span class="feat">Gaming look</span><span class="feat">Rapide</span></div>
+        <div class="card-footer"><div class="card-price">14.99€ <span>/ vidéo</span></div><a class="btn-card">Commander →</a></div>
       </div>
     </div>
-
     <div class="product-card" onclick="openModal('fps')">
-      <div class="product-visual pv-fps"><div class="mock-fps-screen"><div class="mock-fps-overlay"></div></div></div>
+      <div class="product-visual pv-fps"></div>
       <div class="card-badge new">New</div>
       <div class="card-body">
         <div class="card-category">Optimisation</div>
         <div class="card-name">120 FPS Method</div>
-        <div class="card-desc">Méthode complète pour poster en 120 FPS sur tiktok.</div>
-        <div class="card-features">
-          <span class="feat">PC & Console</span><span class="feat">Guide PDF</span><span class="feat">Support live</span><span class="feat">Garanti</span>
-        </div>
-        <div class="card-footer">
-          <div class="card-price">10€ <span>/ accès</span></div>
-          <a class="btn-card">Commander →</a>
-        </div>
+        <div class="card-desc">Méthode complète pour poster en 120 FPS sur TikTok.</div>
+        <div class="card-features"><span class="feat">PC & Console</span><span class="feat">Guide PDF</span><span class="feat">Support live</span><span class="feat">Garanti</span></div>
+        <div class="card-footer"><div class="card-price">10€ <span>/ accès</span></div><a class="btn-card">Commander →</a></div>
       </div>
     </div>
-
     <div class="product-card" onclick="openModal('bot')">
-      <div class="product-visual pv-bot"><div class="mock-bot-ui"></div></div>
+      <div class="product-visual pv-bot"></div>
       <div class="card-body">
         <div class="card-category">Discord</div>
         <div class="card-name">Bot Discord Custom</div>
-        <div class="card-desc">Bot Discord développé sur mesure. Modération, tickets, niveaux, musique, commandes persos (Hebergement non fournis).</div>
-        <div class="card-features">
-          <span class="feat">Sur mesure</span><span class="feat">Commandes custom</span><span class="feat">Mises à jour</span>
-        </div>
-        <div class="card-footer">
-          <div class="card-price">24.99€ <span>/ bot</span></div>
-          <a class="btn-card">Commander →</a>
-        </div>
+        <div class="card-desc">Bot Discord développé sur mesure. Modération, tickets, niveaux, musique, commandes persos (Hébergement non fourni).</div>
+        <div class="card-features"><span class="feat">Sur mesure</span><span class="feat">Commandes custom</span><span class="feat">Mises à jour</span></div>
+        <div class="card-footer"><div class="card-price">24.99€ <span>/ bot</span></div><a class="btn-card">Commander →</a></div>
       </div>
     </div>
-
     <div class="product-card" onclick="openModal('edit')">
-      <div class="product-visual pv-pack"><div class="mock-pack"></div></div>
+      <div class="product-visual pv-pack"></div>
       <div class="card-body">
         <div class="card-category">Montage</div>
         <div class="card-name">Clip Edit</div>
         <div class="card-desc">Montage gaming stylé pour tes highlights. Transitions, effets, musique syncro, format court ou long.</div>
-        <div class="card-features">
-          <span class="feat">After Effect</span><span class="feat">Transitions</span><span class="feat">Sous-titres</span><span class="feat">Livraison sous 48h</span>
-        </div>
-        <div class="card-footer">
-          <div class="card-price">14.99€ <span>/ clip</span></div>
-          <a class="btn-card">Commander →</a>
-        </div>
+        <div class="card-features"><span class="feat">After Effect</span><span class="feat">Transitions</span><span class="feat">Sous-titres</span><span class="feat">Livraison 48h</span></div>
+        <div class="card-footer"><div class="card-price">14.99€ <span>/ clip</span></div><a class="btn-card">Commander →</a></div>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -362,9 +480,8 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
     <div style="text-align:center">
       <div class="pack-price-orig">Valeur réelle : 120€+</div>
       <div class="pack-price-big">44.99€</div>
-      <div class="pack-save">Économise 75€+</div>
-      <br>
-      <a href="#" class="btn-pack">Prendre le Pack Elite ✦</a>
+      <div class="pack-save">Économise 75€+</div><br>
+      <a href="#" class="btn-pack" onclick="handlePackOrder()">Prendre le Pack Elite ✦</a>
       <p style="font-size:12px;color:var(--muted);margin-top:15px">Paiement sécurisé · Accès immédiat</p>
     </div>
   </div>
@@ -374,10 +491,9 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 <section class="faq-section" id="faq">
   <div class="section-label">Questions fréquentes</div>
   <h2 class="section-title" style="font-size:clamp(30px,5vw,50px);margin-bottom:40px">FAQ</h2>
-
   <div class="faq-item" onclick="toggleFaq(this)">
     <div class="faq-q">Comment passer une commande ? <span class="faq-icon">+</span></div>
-    <div class="faq-a">Clique sur "Commander" sur le produit souhaité, tu seras redirigé vers notre Discord où tu peux ouvrir un ticket. Un membre de l'équipe prend en charge ta commande en moins de 2H.</div>
+    <div class="faq-a">Clique sur "Commander" sur le produit souhaité. Connecte-toi avec Discord et un ticket est créé directement sur le site. Tu peux échanger avec notre équipe sans jamais quitter la page.</div>
   </div>
   <div class="faq-item" onclick="toggleFaq(this)">
     <div class="faq-q">Quel est le délai de livraison ? <span class="faq-icon">+</span></div>
@@ -393,23 +509,19 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
   </div>
   <div class="faq-item" onclick="toggleFaq(this)">
     <div class="faq-q">Le bot Discord est-il hébergé ? <span class="faq-icon">+</span></div>
-    <div class="faq-a">Oui, le bot est hébergé sur nos serveurs 24/7 sans interruption. Les mises à jour mineures sont gratuites. L'ajout de fonctionnalités majeures peut faire l'objet d'un devis.</div>
+    <div class="faq-a">Non, l'hébergement n'est pas inclus. Le code source et la configuration complète te sont livrés. Les mises à jour mineures sont gratuites.</div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="foot-logo">REAM<span>X</span></div>
   <div class="foot-links">
-    <a href="#">Discord</a>
-    <a href="#">Twitter</a>
-    <a href="#">CGV</a>
-    <a href="#">Contact</a>
+    <a href="#">Discord</a><a href="#">Twitter</a><a href="#">CGV</a><a href="#">Contact</a>
   </div>
   <div class="foot-copy">© 2025 ReamX · Tous droits réservés</div>
 </footer>
 
-<!-- MODALS -->
+<!-- MODAL PRODUIT -->
 <div class="modal-overlay" id="modal">
   <div class="modal" id="modal-content">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -417,422 +529,891 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
   </div>
 </div>
 
-<script>
+<!-- ══════════════════════════════════
+     CHAT CLIENT
+     ══════════════════════════════════ -->
+<button id="chat-bubble" onclick="toggleChat()">
+  <div id="chat-notif"></div>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
 
-/* ===================== PARTICLE SYSTEM ===================== */
+<div id="chat-window">
+  <div id="chat-header">
+    <div class="chat-hdr-left">
+      <div class="chat-hdr-avatar"><img id="chat-user-avatar" src="" alt="" onerror="this.style.display='none'"></div>
+      <div class="chat-hdr-info">
+        <span class="chat-hdr-name">Support ReamX</span>
+        <span class="chat-hdr-status">En ligne</span>
+      </div>
+    </div>
+    <button class="chat-close-btn" onclick="toggleChat()">✕</button>
+  </div>
+
+  <!-- Tabs : liste tickets / (si un ticket actif, vue messages) -->
+  <div id="chat-tabs">
+    <button class="chat-tab active" onclick="showChatTab('list')">Mes commandes</button>
+    <button class="chat-tab" id="chat-tab-msg" onclick="showChatTab('msg')" style="display:none">Message</button>
+  </div>
+
+  <!-- Liste tickets -->
+  <div id="ticket-list"></div>
+
+  <!-- Vue messages d'un ticket -->
+  <div id="ticket-chat-view">
+    <div id="ticket-chat-back" onclick="showChatTab('list')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Retour aux commandes
+    </div>
+    <div id="ticket-chat-header">
+      <div class="tch-info">
+        <span class="tch-name" id="tch-name-label"></span>
+        <span class="tch-status" id="tch-status-label"></span>
+      </div>
+    </div>
+    <div id="ticket-messages"></div>
+    <div id="chat-typing"><div class="dots"><i></i><i></i><i></i></div> Support tape…</div>
+    <div id="ticket-input-area">
+      <textarea id="ticket-input" rows="1" placeholder="Ton message…"></textarea>
+      <button id="ticket-send" onclick="clientSend()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 8 22 2" stroke="#fff" stroke-width="2" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+    </div>
+    <div class="closed-banner" id="closed-banner" style="display:none">🔒 Ce ticket est fermé — tu ne peux plus envoyer de messages.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ADMIN PANEL
+     ══════════════════════════════════ -->
+<button id="admin-bubble" onclick="toggleAdmin()">
+  <div id="admin-notif"></div>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#fff" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+</button>
+
+<div id="admin-panel">
+  <div id="admin-header">
+    <span class="admin-title-txt">⚡ Inbox Admin</span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="admin-conv-count" id="admin-conv-count">0</span>
+      <button class="chat-close-btn" onclick="toggleAdmin()">✕</button>
+    </div>
+  </div>
+
+  <div id="admin-tabs">
+    <button class="admin-tab active" onclick="showAdminTab('open')">Ouverts</button>
+    <button class="admin-tab" onclick="showAdminTab('closed')">Fermés</button>
+  </div>
+
+  <!-- Liste convs -->
+  <div id="admin-conv-list"></div>
+
+  <!-- Vue chat admin -->
+  <div id="admin-chat-view">
+    <div id="admin-back" onclick="backToAdminList()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Retour
+    </div>
+    <div id="admin-chat-header">
+      <div class="admin-chat-user">
+        <span class="admin-chat-username" id="admin-chat-username"></span>
+        <span class="admin-chat-ticket" id="admin-chat-ticket"></span>
+      </div>
+      <button class="btn-close-ticket" id="btn-close-ticket" onclick="closeTicket()">Fermer le ticket</button>
+    </div>
+    <div id="admin-messages"></div>
+    <div id="admin-input-area">
+      <textarea id="admin-input" rows="1" placeholder="Répondre…"></textarea>
+      <button id="admin-send" onclick="adminSend()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 8 22 2" stroke="#fff" stroke-width="2" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   CONFIG
+   ══════════════════════════════════════════════════════ */
+const DISCORD_CLIENT_ID = '1469158928800813066';
+const BOT_API_URL       = 'https://145.239.65.118:20106';
+const ADMIN_IDS         = ['515793773435813901','1305867949449416755'];
+const POLL_MS           = 3000;
+
+const OAUTH_REDIRECT = encodeURIComponent(window.location.href.split('?')[0]);
+const OAUTH_URL      = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${OAUTH_REDIRECT}&scope=identify`;
+
+/* ══ STATE ══ */
+let discordUser      = null;
+let pendingServiceKey = null;
+let pollTimer        = null;
+
+// Chat client
+let chatOpen          = false;
+let clientTickets     = [];       // [{id, service, status, lastMsg, unread, msgs:[]}]
+let activeTicketId    = null;
+let clientMsgLastIds  = {};       // {ticketId: lastMsgId}
+
+// Admin
+let adminOpen         = false;
+let adminTickets      = [];       // tous les tickets
+let adminActiveTab    = 'open';
+let adminActiveTicket = null;
+let adminMsgLastId    = 0;
+
+/* ══════════════════════════════════════════════════════
+   PARTICLE SYSTEM
+   ══════════════════════════════════════════════════════ */
 const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
+const ctx    = canvas.getContext('2d');
+let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
 let particles = [];
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
 
-class Particle {
-  constructor() { this.reset(true); }
-  reset(initial) {
-    this.x = Math.random() * canvas.width;
-    this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
-    this.size = Math.random() * 1.5 + 0.3;
-    this.speedX = (Math.random() - 0.5) * 0.3;
-    this.speedY = -(Math.random() * 0.4 + 0.1);
-    this.opacity = Math.random() * 0.5 + 0.1;
-    this.opacityDelta = (Math.random() * 0.003 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
+class Particle{
+  constructor(){ this.reset(true); }
+  reset(init){
+    this.x = Math.random()*canvas.width;
+    this.y = init ? Math.random()*canvas.height : canvas.height+10;
+    this.size = Math.random()*1.5+0.3;
+    this.speedX = (Math.random()-.5)*.3;
+    this.speedY = -(Math.random()*.4+0.1);
+    this.opacity = Math.random()*.5+0.1;
+    this.opacityDelta = (Math.random()*.003+.001)*(Math.random()>.5?1:-1);
     const r = Math.random();
-    if (r < 0.5) { this.color = `rgba(88,101,242,`; }
-    else if (r < 0.8) { this.color = `rgba(235,69,158,`; }
-    else { this.color = `rgba(255,255,255,`; }
-    this.mouseInfluence = Math.random() * 0.015 + 0.003;
+    this.color = r<.5?'rgba(88,101,242,':r<.8?'rgba(235,69,158,':'rgba(255,255,255,';
   }
-  update() {
-    const dx = mouseX - this.x;
-    const dy = mouseY - this.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 180) {
-      const force = (180 - dist) / 180;
-      this.x -= (dx / dist) * force * 0.8;
-      this.y -= (dy / dist) * force * 0.8;
-    }
-    this.x += this.speedX;
-    this.y += this.speedY;
-    this.opacity += this.opacityDelta;
-    if (this.opacity > 0.6) { this.opacity = 0.6; this.opacityDelta *= -1; }
-    if (this.opacity < 0.05) { this.opacity = 0.05; this.opacityDelta *= -1; }
-    if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10) { this.reset(false); }
+  update(){
+    const dx=mouseX-this.x,dy=mouseY-this.y,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<180){const f=(180-dist)/180;this.x-=(dx/dist)*f*.8;this.y-=(dy/dist)*f*.8;}
+    this.x+=this.speedX; this.y+=this.speedY;
+    this.opacity+=this.opacityDelta;
+    if(this.opacity>.6){this.opacity=.6;this.opacityDelta*=-1;}
+    if(this.opacity<.05){this.opacity=.05;this.opacityDelta*=-1;}
+    if(this.y<-10||this.x<-10||this.x>canvas.width+10) this.reset(false);
   }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = this.color + this.opacity + ')';
-    ctx.fill();
-  }
+  draw(){ ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=this.color+this.opacity+')';ctx.fill(); }
 }
-
-// Lignes de grille animées en fond
-class GridLine {
-  constructor(isHorizontal) {
-    this.isHorizontal = isHorizontal;
-    this.pos = isHorizontal ? Math.random() * window.innerHeight : Math.random() * window.innerWidth;
-    this.speed = (Math.random() * 0.15 + 0.05) * (Math.random() > 0.5 ? 1 : -1);
-    this.opacity = Math.random() * 0.04 + 0.01;
-  }
-  update() {
-    this.pos += this.speed;
-    if (this.isHorizontal) {
-      if (this.pos > window.innerHeight + 50) this.pos = -50;
-      if (this.pos < -50) this.pos = window.innerHeight + 50;
-    } else {
-      if (this.pos > window.innerWidth + 50) this.pos = -50;
-      if (this.pos < -50) this.pos = window.innerWidth + 50;
-    }
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.strokeStyle = `rgba(88,101,242,${this.opacity})`;
-    ctx.lineWidth = 0.5;
-    if (this.isHorizontal) {
-      ctx.moveTo(0, this.pos); ctx.lineTo(canvas.width, this.pos);
-    } else {
-      ctx.moveTo(this.pos, 0); ctx.lineTo(this.pos, canvas.height);
-    }
-    ctx.stroke();
-  }
+class GridLine{
+  constructor(h){ this.h=h; this.pos=h?Math.random()*window.innerHeight:Math.random()*window.innerWidth; this.speed=(Math.random()*.15+.05)*(Math.random()>.5?1:-1); this.opacity=Math.random()*.04+.01; }
+  update(){ this.pos+=this.speed; const max=this.h?window.innerHeight:window.innerWidth; if(this.pos>max+50)this.pos=-50; if(this.pos<-50)this.pos=max+50; }
+  draw(){ ctx.beginPath();ctx.strokeStyle=`rgba(88,101,242,${this.opacity})`;ctx.lineWidth=.5;if(this.h){ctx.moveTo(0,this.pos);ctx.lineTo(canvas.width,this.pos);}else{ctx.moveTo(this.pos,0);ctx.lineTo(this.pos,canvas.height);}ctx.stroke(); }
 }
+for(let i=0;i<120;i++) particles.push(new Particle());
+const gridLines=[];
+for(let i=0;i<8;i++) gridLines.push(new GridLine(true));
+for(let i=0;i<8;i++) gridLines.push(new GridLine(false));
 
-// Init
-for (let i = 0; i < 120; i++) particles.push(new Particle());
-const gridLines = [];
-for (let i = 0; i < 8; i++) gridLines.push(new GridLine(true));
-for (let i = 0; i < 8; i++) gridLines.push(new GridLine(false));
-
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  gridLines.forEach(l => { l.update(); l.draw(); });
-  particles.forEach(p => { p.update(); p.draw(); });
-
-  // Connexions entre particules proches
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 80) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(88,101,242,${0.08 * (1 - dist / 80)})`;
-        ctx.lineWidth = 0.4;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.stroke();
-      }
-    }
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  gridLines.forEach(l=>{l.update();l.draw();});
+  particles.forEach(p=>{p.update();p.draw();});
+  for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++){
+    const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<80){ctx.beginPath();ctx.strokeStyle=`rgba(88,101,242,${.08*(1-d/80)})`;ctx.lineWidth=.4;ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke();}
   }
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
 
-/* ===================== CURSOR GLOW ===================== */
+/* ══ CURSOR ══ */
 const cursorGlow = document.getElementById('cursor-glow');
-let glowX = window.innerWidth / 2, glowY = window.innerHeight / 2;
-let targetGlowX = glowX, targetGlowY = glowY;
-
-document.addEventListener('mousemove', (e) => {
-  targetGlowX = e.clientX;
-  targetGlowY = e.clientY;
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+let glowX=window.innerWidth/2,glowY=window.innerHeight/2,tX=glowX,tY=glowY;
+document.addEventListener('mousemove',e=>{tX=e.clientX;tY=e.clientY;mouseX=e.clientX;mouseY=e.clientY;});
+(function animGlow(){ glowX+=(tX-glowX)*.08; glowY+=(tY-glowY)*.08; cursorGlow.style.left=glowX+'px'; cursorGlow.style.top=glowY+'px'; requestAnimationFrame(animGlow); })();
+document.querySelectorAll('a,button,.product-card,.faq-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
 });
 
-function animateGlow() {
-  glowX += (targetGlowX - glowX) * 0.08;
-  glowY += (targetGlowY - glowY) * 0.08;
-  cursorGlow.style.left = glowX + 'px';
-  cursorGlow.style.top = glowY + 'px';
-  requestAnimationFrame(animateGlow);
-}
-animateGlow();
-
-document.querySelectorAll('a, button, .product-card, .faq-item, .btn-card, .nav-cta, .btn-primary, .btn-ghost, .btn-pack, .btn-modal').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-});
-
-/* ===================== PRODUCTS DATA ===================== */
+/* ══════════════════════════════════════════════════════
+   PRODUITS DATA
+   ══════════════════════════════════════════════════════ */
 const products = {
-  banner: {
-    category: 'Identité visuelle', title: 'Banner Header', price: '4.99€', unit: '/ pièce',
-    desc: 'Un banner gaming ou créateur entièrement personnalisé. Texte 3D sur mesure, fond thématique (anime, manga, célébrités, jeux…), fichiers PSD éditables inclus pour que tu puisses modifier à tout moment.',
-    features: [
-      {icon:'✦', label:'Texte 3D rendu', desc:'Effet professionnel avec ombres et lumières'},
-      {icon:'✦', label:'Fichier PSD éditable', desc:'Modifie le texte et les couleurs toi-même'},
-      {icon:'✦', label:'Fond personnalisé', desc:'Anime, manga, IRL, abstrait, gradient…'},
-      {icon:'✦', label:'Export PNG HD', desc:'Résolution Twitch, YouTube ou Discord optimisée'},
-      {icon:'✦', label:'Support Discord 24/7', desc:'On répond en moins d\'une heure'}
-    ]
-  },
-  logo: {
-    category: 'Branding', title: 'Logo 3D / 2D', price: '9.99€', unit: '/ pièce',
-    desc: 'Logo professionnel statique ou animé. Idéal pour ta chaîne YouTube, ton stream Twitch ou ton serveur Discord. Rendu 3D photoréaliste ou design 2D épuré selon tes goûts.',
-    features: [
-      {icon:'✦', label:'3D ou 2D au choix', desc:'Modélisation 3D ou design vectoriel plat'},
-      {icon:'✦', label:'Animation incluse', desc:'Intro animée pour tes streams et vidéos'},
-      {icon:'✦', label:'MP4, MOV, GIF, PNG', desc:'Tous les formats dont tu as besoin'},
-      {icon:'✦', label:'Livraison rapide', desc:'En moins de 24H après validation du brief'},
-      {icon:'✦', label:'Révisions incluses', desc:'Deux aller-retours pour affiner le résultat'}
-    ]
-  },
-  color: {
-    category: 'Post-production', title: 'Color Correction', price: '7.99€', unit: '/ vidéo',
-    desc: 'Retouche colorimétrique pro pour tes clips, montages, thumbnails ou photos de profil. Donne un look cinématique, gaming ou streetwear à ton contenu pour le faire sortir du lot.',
-    features: [
-      {icon:'✦', label:'LUT personnalisée', desc:'Palette colorimétrique adaptée à ton style'},
-      {icon:'✦', label:'Look cinematic', desc:'Étalonnage pro comme les grosses productions'},
-      {icon:'✦', label:'Thumbnails & clips', desc:'Vidéos, images, toute résolution acceptée'},
-      {icon:'✦', label:'Gaming aesthetic', desc:'Vibes dark, néon, orange-teal, pastel…'},
-      {icon:'✦', label:'Fichier LUT fourni', desc:'Applique toi-même le style sur tes futurs clips'}
-    ]
-  },
-  fps: {
-    category: 'Optimisation gaming', title: '120 FPS Method', price: '14.99€', unit: '/ accès', ticketKey: '120-fps-ticket',
-    desc: 'Guide complet pour atteindre et stabiliser les 120 FPS stables sur PC et console. Réglages système, paramètres in-game, config réseau — tout ce qu\'il faut pour jouer en smooth absolu.',
-    features: [
-      {icon:'✦', label:'PC Windows 10/11', desc:'Optimisation BIOS, drivers, paramètres Windows'},
-      {icon:'✦', label:'PS5 & Xbox Series', desc:'Modes performance, résolution et FPS stables'},
-      {icon:'✦', label:'Guide PDF complet', desc:'50+ pages avec captures d\'écran étape par étape'},
-      {icon:'✦', label:'Support live', desc:'Session Discord si tu bloques sur une étape'},
-      {icon:'✦', label:'Mises à jour gratuites', desc:'Le guide évolue à chaque update des jeux majeurs'}
-    ]
-  },
-  bot: {
-    category: 'Discord', title: 'Bot Discord Custom', price: '24.99€', unit: '/ bot',
-    desc: 'Bot Discord développé entièrement sur mesure selon tes besoins. Système de tickets, rôles auto, bienvenue personnalisée, modération, musique, commandes slash et bien plus.',
-    features: [
-      {icon:'✦', label:'Développé sur mesure', desc:'Toutes les fonctionnalités que tu veux'},
-      {icon:'✦', label:'Hébergement 24/7', desc:'Uptime garanti sur nos serveurs dédiés'},
-      {icon:'✦', label:'Tickets & modération', desc:'Système de support et modération auto'},
-      {icon:'✦', label:'Niveaux & XP', desc:'Système de progression pour tes membres'},
-      {icon:'✦', label:'Commandes slash', desc:'Interface moderne Discord compatible'}
-    ]
-  },
-  edit: {
-    category: 'Montage vidéo', title: 'Clip Edit', price: '14.99€', unit: '/ clip',
-    desc: 'Montage gaming stylé pour tes highlights, fragmovies ou contenu short-form. Transitions dynamiques, synchro musique, effets visuels et sous-titres inclus.',
-    features: [
-      {icon:'✦', label:'CapCut ou Premiere Pro', desc:'Logiciel adapté à ta demande et au format'},
-      {icon:'✦', label:'Transitions dynamiques', desc:'Cuts rythmés, whip pan, zoom, flash…'},
-      {icon:'✦', label:'Color grading inclus', desc:'Étalonnage gaming pour un rendu pro'},
-      {icon:'✦', label:'Sous-titres stylés', desc:'Texte animé synchronisé sur la voix'},
-      {icon:'✦', label:'Livraison en 24H', desc:'Format Twitch, YouTube Shorts ou TikTok'}
-    ]
-  }
+  banner:{ category:'Identité visuelle', title:'Banner Header', price:'4.99€', unit:'/ pièce', emoji:'🎨',
+    desc:'Banner gaming ou créateur entièrement personnalisé. Texte 3D sur mesure, fond thématique, fichiers PSD éditables inclus.',
+    features:[{icon:'✦',label:'Texte 3D rendu',desc:'Effet professionnel avec ombres et lumières'},{icon:'✦',label:'Fichier PSD éditable',desc:'Modifie le texte et les couleurs toi-même'},{icon:'✦',label:'Fond personnalisé',desc:'Anime, manga, IRL, abstrait, gradient…'},{icon:'✦',label:'Export PNG HD',desc:'Résolution Twitch, YouTube ou Discord optimisée'}]},
+  logo:{ category:'Branding', title:'Logo 3D / 2D', price:'9.99€', unit:'/ pièce', emoji:'⚡',
+    desc:'Logo professionnel statique ou animé. Rendu 3D photoréaliste ou design 2D épuré selon tes goûts.',
+    features:[{icon:'✦',label:'3D ou 2D au choix',desc:'Modélisation 3D ou design vectoriel plat'},{icon:'✦',label:'Animation incluse',desc:'Intro animée pour tes streams et vidéos'},{icon:'✦',label:'MP4, MOV, GIF, PNG',desc:'Tous les formats dont tu as besoin'},{icon:'✦',label:'Révisions incluses',desc:'Deux aller-retours pour affiner le résultat'}]},
+  color:{ category:'Post-production', title:'Color Correction', price:'14.99€', unit:'/ vidéo', emoji:'🎬',
+    desc:'Retouche colorimétrique pro pour tes clips, montages, thumbnails ou photos de profil.',
+    features:[{icon:'✦',label:'LUT personnalisée',desc:'Palette colorimétrique adaptée à ton style'},{icon:'✦',label:'Look cinematic',desc:'Étalonnage pro comme les grosses productions'},{icon:'✦',label:'Gaming aesthetic',desc:'Vibes dark, néon, orange-teal, pastel…'},{icon:'✦',label:'Fichier LUT fourni',desc:'Applique toi-même le style sur tes futurs clips'}]},
+  fps:{ category:'Optimisation', title:'120 FPS Method', price:'10€', unit:'/ accès', emoji:'🚀',
+    desc:'Guide complet pour poster en 120 FPS sur TikTok. PC, PS5, Xbox — tout est couvert.',
+    features:[{icon:'✦',label:'PC Windows 10/11',desc:'Optimisation BIOS, drivers, paramètres Windows'},{icon:'✦',label:'PS5 & Xbox Series',desc:'Modes performance, résolution et FPS stables'},{icon:'✦',label:'Guide PDF complet',desc:'50+ pages avec captures d\'écran étape par étape'},{icon:'✦',label:'Mises à jour gratuites',desc:'Le guide évolue à chaque update'}]},
+  bot:{ category:'Discord', title:'Bot Discord Custom', price:'24.99€', unit:'/ bot', emoji:'🤖',
+    desc:'Bot Discord développé entièrement sur mesure selon tes besoins. Tickets, rôles, modération, musique, commandes slash.',
+    features:[{icon:'✦',label:'Développé sur mesure',desc:'Toutes les fonctionnalités que tu veux'},{icon:'✦',label:'Tickets & modération',desc:'Système de support et modération auto'},{icon:'✦',label:'Niveaux & XP',desc:'Système de progression pour tes membres'},{icon:'✦',label:'Commandes slash',desc:'Interface moderne Discord compatible'}]},
+  edit:{ category:'Montage', title:'Clip Edit', price:'14.99€', unit:'/ clip', emoji:'🎞️',
+    desc:'Montage gaming stylé pour tes highlights, fragmovies ou contenu short-form. Transitions dynamiques, synchro musique, effets visuels.',
+    features:[{icon:'✦',label:'CapCut ou Premiere Pro',desc:'Logiciel adapté à ta demande et au format'},{icon:'✦',label:'Transitions dynamiques',desc:'Cuts rythmés, whip pan, zoom, flash…'},{icon:'✦',label:'Color grading inclus',desc:'Étalonnage gaming pour un rendu pro'},{icon:'✦',label:'Livraison en 24H',desc:'Format Twitch, YouTube Shorts ou TikTok'}]},
 };
 
-/* ===================== CONFIG ===================== */
-const DISCORD_CLIENT_ID = '1469158928800813066';
-// ⚠️ Katabump expose ton bot via HTTPS sur ce port — si le cert est auto-signé,
-// tu dois ajouter l'exception manuellement dans le navigateur en visitant :
-// https://145.239.65.118:20106/ping une seule fois.
-// Ou mieux : ajoute un domaine custom dans Katabump Network et utilise ce domaine ici.
-const BOT_API_URL = 'https://145.239.65.118:20106';
-// Mettre ici l'URL exacte de ton site (sans slash final) pour le redirect OAuth
-const SITE_URL = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
+/* ══════════════════════════════════════════════════════
+   UTILITAIRES
+   ══════════════════════════════════════════════════════ */
+function fmtTime(ts){const d=new Date(ts);return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
+function esc(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// Scope identify = récupérer l'ID Discord du user, guilds.join = l'ajouter au serveur si besoin
-const OAUTH_REDIRECT = encodeURIComponent(window.location.href.split('?')[0]);
-const OAUTH_URL = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${OAUTH_REDIRECT}&scope=identify`;
+function showToast(msg, type='info'){
+  const ex=document.getElementById('reamx-toast'); if(ex) ex.remove();
+  const colors={info:'var(--accent)',error:'#e74c3c',success:'#2ecc71'};
+  const t=document.createElement('div'); t.id='reamx-toast';
+  t.style.cssText=`position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid ${colors[type]};color:#fff;padding:14px 24px;border-radius:12px;font-size:13px;z-index:5000;box-shadow:0 4px 30px rgba(0,0,0,0.4);max-width:90vw;text-align:center;`;
+  t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),4000);
+}
 
-// État de session (stocké en mémoire, perdu au reload — normal pour OAuth implicite)
-let discordUser = null; // { id, username, avatar, discriminator }
-let pendingServiceKey = null;
-
-/* ---- Lire le token depuis le hash OAuth (#access_token=...) ---- */
-async function handleOAuthCallback() {
+/* ══════════════════════════════════════════════════════
+   DISCORD OAUTH
+   ══════════════════════════════════════════════════════ */
+async function handleOAuthCallback(){
   const hash = window.location.hash;
-  if (!hash.includes('access_token')) return;
-
+  if(!hash.includes('access_token')) return;
   const params = new URLSearchParams(hash.slice(1));
   const token = params.get('access_token');
-  if (!token) return;
-
-  // Nettoyer l'URL
-  history.replaceState(null, '', window.location.pathname);
-
-  try {
-    const res = await fetch('https://discord.com/api/users/@me', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+  if(!token) return;
+  history.replaceState(null,'',window.location.pathname);
+  try{
+    const res = await fetch('https://discord.com/api/users/@me',{headers:{Authorization:`Bearer ${token}`}});
     const user = await res.json();
-    discordUser = { id: user.id, username: user.username, avatar: user.avatar, discriminator: user.discriminator };
-
+    discordUser = {id:user.id, username:user.username, avatar:user.avatar, discriminator:user.discriminator};
     updateNavUser();
+    if(pendingServiceKey){ const k=pendingServiceKey; pendingServiceKey=null; await openTicketForService(k); }
+  }catch(e){ showToast('❌ Connexion Discord échouée.','error'); }
+}
 
-    // Si une commande était en attente, reprendre
-    if (pendingServiceKey) {
-      const key = pendingServiceKey;
-      pendingServiceKey = null;
-      await createTicketForUser(key);
-    }
-  } catch (e) {
-    console.error('OAuth error:', e);
-    showToast('❌ Connexion Discord échouée, réessaie.', 'error');
+function updateNavUser(){
+  if(!discordUser) return;
+  const ex=document.getElementById('nav-user'); if(ex) ex.remove();
+  const avatarUrl=discordUser.avatar
+    ?`https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png?size=32`
+    :`https://cdn.discordapp.com/embed/avatars/0.png`;
+  const el=document.createElement('div'); el.id='nav-user';
+  el.style.cssText='display:flex;align-items:center;gap:8px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.3);border-radius:8px;padding:6px 14px;white-space:nowrap;';
+  el.innerHTML=`<img src="${avatarUrl}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'"><span style="font-size:13px;font-weight:600;color:#fff;">${esc(discordUser.username)}</span><button onclick="disconnectUser()" style="background:none;border:none;color:var(--muted);font-size:11px;padding:0 0 0 4px;cursor:pointer;">✕</button>`;
+  const navRight=document.querySelector('.nav-right');
+  navRight.insertBefore(el,document.getElementById('nav-cta-btn'));
+  // Init UI selon le rôle
+  initAfterLogin();
+}
+
+function disconnectUser(){
+  discordUser=null;
+  const el=document.getElementById('nav-user'); if(el) el.remove();
+  // Cacher bulles
+  document.getElementById('chat-bubble').style.display='none';
+  document.getElementById('admin-bubble').style.display='none';
+  document.getElementById('chat-window').classList.remove('open');
+  document.getElementById('admin-panel').classList.remove('open');
+  clearInterval(pollTimer);
+  showToast('Déconnecté.','info');
+}
+
+function restorePendingKey(){
+  const s=sessionStorage.getItem('pendingServiceKey');
+  if(s){ pendingServiceKey=s; sessionStorage.removeItem('pendingServiceKey'); }
+}
+
+/* ══════════════════════════════════════════════════════
+   INIT APRÈS LOGIN
+   ══════════════════════════════════════════════════════ */
+function initAfterLogin(){
+  if(!discordUser) return;
+
+  if(isAdmin()){
+    // Admin : bulle rose gauche
+    document.getElementById('admin-bubble').style.display='flex';
+    loadAdminTickets();
+    startAdminPolling();
+    // Mettre l'avatar dans le header chat admin
+  } else {
+    // Client : charger ses tickets depuis l'API
+    loadClientTickets();
   }
 }
 
-/* ---- Afficher l'avatar/pseudo dans la nav une fois connecté ---- */
-function updateNavUser() {
-  if (!discordUser) return;
-  const existing = document.getElementById('nav-user');
-  if (existing) existing.remove();
+function isAdmin(){ return discordUser && ADMIN_IDS.includes(discordUser.id); }
 
-  const avatarUrl = discordUser.avatar
-    ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png?size=32`
-    : `https://cdn.discordapp.com/embed/avatars/0.png`;
-
-  const el = document.createElement('div');
-  el.id = 'nav-user';
-  el.style.cssText = 'display:flex;align-items:center;gap:8px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.3);border-radius:8px;padding:6px 14px;';
-  el.innerHTML = `
-    <img src="${avatarUrl}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
-    <span style="font-size:13px;font-weight:600;color:#fff;">${discordUser.username}</span>
-    <button onclick="disconnectUser()" style="background:none;border:none;color:var(--muted);font-size:11px;padding:0 0 0 4px;line-height:1;">✕</button>
-  `;
-
-  // Injecter dans .nav-right, AVANT le bouton Commander
-  const navRight = document.querySelector('.nav-right');
-  const ctaBtn = document.getElementById('nav-cta-btn');
-  navRight.insertBefore(el, ctaBtn);
+/* ══════════════════════════════════════════════════════
+   API HELPERS
+   ══════════════════════════════════════════════════════ */
+async function apiGet(path, adminAuth=false){
+  const headers = {};
+  if(adminAuth && discordUser) headers['x-admin-id'] = discordUser.id;
+  const r = await fetch(BOT_API_URL + path, {headers});
+  return r.json();
+}
+async function apiPost(path, body, adminAuth=false){
+  const headers = {'Content-Type':'application/json'};
+  if(adminAuth && discordUser) headers['x-admin-id'] = discordUser.id;
+  const r = await fetch(BOT_API_URL + path, {method:'POST', headers, body:JSON.stringify(body)});
+  return r.json();
 }
 
-function disconnectUser() {
-  discordUser = null;
-  const el = document.getElementById('nav-user');
-  if (el) el.remove();
-  showToast('Déconnecté de Discord.', 'info');
-}
-
-/* ---- Toast notifications ---- */
-function showToast(msg, type = 'info') {
-  const existing = document.getElementById('reamx-toast');
-  if (existing) existing.remove();
-
-  const colors = { info: 'var(--accent)', error: '#e74c3c', success: '#2ecc71' };
-  const t = document.createElement('div');
-  t.id = 'reamx-toast';
-  t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid ${colors[type]};color:#fff;padding:14px 24px;border-radius:12px;font-size:13px;z-index:5000;box-shadow:0 4px 30px rgba(0,0,0,0.4);max-width:90vw;text-align:center;`;
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 4000);
-}
-
-/* ---- Créer le ticket via l'API du bot ---- */
-async function createTicketForUser(serviceKey) {
-  const btn = document.getElementById('btn-order');
-  if (btn) { btn.textContent = 'Création du ticket…'; btn.disabled = true; }
-
-  try {
-    const res = await fetch(`${BOT_API_URL}/api/external-ticket`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: discordUser.id, serviceKey })
-    });
-
-    const data = await res.json();
-
-    if (res.ok && data.ticketUrl) {
-      closeModal();
-      showToast('✅ Ticket créé ! Vérifie ton Discord.', 'success');
-      setTimeout(() => window.open(data.ticketUrl, '_blank'), 800);
-    } else {
-      const msg = data.error || 'Erreur lors de la création du ticket.';
-      showToast('❌ ' + msg, 'error');
-      if (btn) { btn.textContent = 'Commander →'; btn.disabled = false; }
-    }
-  } catch (e) {
-    console.error(e);
-    showToast('❌ Impossible de joindre le bot. Réessaie.', 'error');
-    if (btn) { btn.textContent = 'Commander →'; btn.disabled = false; }
-  }
-}
-
-/* ---- Bouton "Commander" dans le modal ---- */
-async function handleOrder(serviceKey) {
-  // Déjà connecté → créer le ticket direct
-  if (discordUser) {
-    await createTicketForUser(serviceKey);
-    return;
-  }
-
-  // Pas connecté → sauvegarder le service et lancer OAuth
-  pendingServiceKey = serviceKey;
-  // Stocker dans sessionStorage pour survivre au redirect
-  sessionStorage.setItem('pendingServiceKey', serviceKey);
-  window.location.href = OAUTH_URL;
-}
-
-/* ---- Restaurer le service key après redirect OAuth ---- */
-function restorePendingKey() {
-  const saved = sessionStorage.getItem('pendingServiceKey');
-  if (saved) {
-    pendingServiceKey = saved;
-    sessionStorage.removeItem('pendingServiceKey');
-  }
-}
-
-/* ---- Ouvrir le modal produit ---- */
-function openModal(id) {
+/* ══════════════════════════════════════════════════════
+   PRODUITS / MODAL
+   ══════════════════════════════════════════════════════ */
+function openModal(id){
   const p = products[id];
-  if (!p) return;
-  const serviceKey = p.ticketKey || 'buy_' + id;
+  if(!p) return;
 
   const connectedBlock = discordUser
     ? `<div style="display:flex;align-items:center;gap:10px;background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-radius:10px;padding:12px 16px;margin-bottom:20px;">
         <img src="https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png?size=32" style="width:28px;height:28px;border-radius:50%;" onerror="this.style.display='none'">
-        <div>
-          <div style="font-size:12px;color:rgba(46,204,113,0.9);font-weight:600;">Connecté en tant que</div>
-          <div style="font-size:14px;font-weight:700;">${discordUser.username}</div>
-        </div>
+        <div><div style="font-size:12px;color:rgba(46,204,113,0.9);font-weight:600;">Connecté en tant que</div><div style="font-size:14px;font-weight:700;">${esc(discordUser.username)}</div></div>
        </div>`
     : `<div style="display:flex;align-items:center;gap:10px;background:rgba(88,101,242,0.08);border:1px solid rgba(88,101,242,0.25);border-radius:10px;padding:12px 16px;margin-bottom:20px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;opacity:0.7"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.89 19.89 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" fill="#5865F2"/></svg>
-        <div style="font-size:13px;color:var(--muted);line-height:1.5;">La commande nécessite de <strong style="color:#fff;">te connecter avec Discord</strong>.<br>Le ticket sera créé automatiquement dans notre serveur.</div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;opacity:.7"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.89 19.89 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.62.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.1.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" fill="#5865F2"/></svg>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5;">Commander nécessite de <strong style="color:#fff;">te connecter avec Discord</strong>.<br>Un ticket sera créé directement sur ce site.</div>
        </div>`;
 
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-badge">${p.category}</div>
-    <div class="modal-title">${p.title}</div>
+    <div class="modal-title">${p.emoji} ${p.title}</div>
     <p class="modal-desc">${p.desc}</p>
     <div class="modal-features">
       <h4>Ce qui est inclus</h4>
-      ${p.features.map(f => `<div class="modal-feat-item"><span class="modal-feat-icon">${f.icon}</span><div><strong style="font-size:13px">${f.label}</strong><br><span style="color:var(--muted);font-size:12px">${f.desc}</span></div></div>`).join('')}
+      ${p.features.map(f=>`<div class="modal-feat-item"><span class="modal-feat-icon">${f.icon}</span><div><strong style="font-size:13px">${esc(f.label)}</strong><br><span style="color:var(--muted);font-size:12px">${esc(f.desc)}</span></div></div>`).join('')}
     </div>
     ${connectedBlock}
     <div class="modal-footer">
       <div class="modal-price">${p.price} <span>${p.unit}</span></div>
-      <button id="btn-order" class="btn-modal" onclick="handleOrder('${serviceKey}')">
-        ${discordUser ? 'Commander →' : '🔗 Connexion Discord →'}
+      <button id="btn-order" class="btn-modal" onclick="handleOrder('${id}')">
+        ${discordUser ? `Commander →` : '🔗 Connexion Discord →'}
       </button>
-    </div>
-  `;
-
+    </div>`;
   document.getElementById('modal').classList.add('open');
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+async function handleOrder(serviceId){
+  if(!discordUser){
+    pendingServiceKey = serviceId;
+    sessionStorage.setItem('pendingServiceKey', serviceId);
+    window.location.href = OAUTH_URL;
+    return;
+  }
+  closeModal();
+  await openTicketForService(serviceId);
 }
 
-function toggleFaq(item) {
-  item.classList.toggle('open');
+async function handlePackOrder(){
+  if(!discordUser){
+    pendingServiceKey = 'pack_elite';
+    sessionStorage.setItem('pendingServiceKey','pack_elite');
+    window.location.href = OAUTH_URL;
+    return;
+  }
+  await openTicketForService('pack_elite');
 }
 
-// Lancer à l'init
+function toggleFaq(item){ item.classList.toggle('open'); }
+
+/* ══════════════════════════════════════════════════════
+   TICKETS — CÔTÉ CLIENT
+   ══════════════════════════════════════════════════════ */
+
+// Ouvrir un nouveau ticket
+async function openTicketForService(serviceId){
+  const p = products[serviceId] || {title: serviceId === 'pack_elite' ? 'Pack Elite Lifetime' : serviceId, emoji:'📦'};
+  try{
+    const data = await apiPost('/api/chat/ticket/create',{
+      userId: discordUser.id,
+      username: discordUser.username,
+      avatar: discordUser.avatar,
+      service: serviceId,
+      serviceLabel: `${p.emoji||''} ${p.title}`
+    });
+    if(data.ticket){
+      showToast('✅ Ticket créé ! Consulte tes commandes.','success');
+      await loadClientTickets();
+      // Afficher bulle et ouvrir
+      showChatBubble();
+      setTimeout(()=>{ chatOpen=false; toggleChat(); selectClientTicket(data.ticket.id); }, 400);
+    } else {
+      showToast('❌ '+(data.error||'Erreur création ticket'),'error');
+    }
+  }catch(e){ showToast('❌ Impossible de joindre le serveur.','error'); }
+}
+
+// Charger les tickets du client
+async function loadClientTickets(){
+  if(!discordUser || isAdmin()) return;
+  try{
+    const data = await apiGet(`/api/chat/tickets?userId=${discordUser.id}`);
+    if(!data.tickets) return;
+
+    // Fusionner pour conserver les msgs déjà chargés
+    data.tickets.forEach(t=>{
+      const existing = clientTickets.find(x=>x.id===t.id);
+      if(existing){ existing.status=t.status; existing.lastMsg=t.lastMsg; existing.lastTs=t.lastTs; }
+      else clientTickets.push({...t, msgs:[], unread:0});
+    });
+
+    // Afficher la bulle seulement si au moins 1 ticket
+    if(clientTickets.length>0) showChatBubble();
+    renderTicketList();
+  }catch(e){}
+}
+
+function showChatBubble(){
+  const avatarUrl = discordUser.avatar
+    ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png?size=32`
+    : `https://cdn.discordapp.com/embed/avatars/0.png`;
+  document.getElementById('chat-user-avatar').src = avatarUrl;
+  document.getElementById('chat-bubble').style.display = 'flex';
+}
+
+function startClientPolling(){
+  clearInterval(pollTimer);
+  pollTimer = setInterval(async()=>{
+    await loadClientTickets();
+    if(activeTicketId) await pollClientMessages(activeTicketId);
+  }, POLL_MS);
+}
+
+async function pollClientMessages(ticketId){
+  const lastId = clientMsgLastIds[ticketId] || 0;
+  try{
+    const data = await apiGet(`/api/chat/messages?ticketId=${ticketId}&after=${lastId}&userId=${discordUser.id}`);
+    if(!data.messages) return;
+    data.messages.forEach(msg=>{
+      if(msg.id > (clientMsgLastIds[ticketId]||0)) clientMsgLastIds[ticketId]=msg.id;
+      // Ajouter seulement les messages admin/system (les nôtres sont déjà affichés)
+      if(msg.from !== 'user'){
+        appendMsgToView('ticket-messages', msg, false);
+        // Badge non lu si fenêtre fermée ou pas sur ce ticket
+        const t = clientTickets.find(x=>x.id===ticketId);
+        if(t && (!chatOpen || activeTicketId !== ticketId)){ t.unread=(t.unread||0)+1; updateChatBubbleNotif(); renderTicketList(); }
+      }
+    });
+  }catch(e){}
+}
+
+// Rendu liste tickets
+function renderTicketList(){
+  const container = document.getElementById('ticket-list');
+  if(clientTickets.length===0){
+    container.innerHTML=`<div class="ticket-empty">Aucune commande pour l'instant.<br>Commande un service pour démarrer !</div>`;
+    return;
+  }
+  container.innerHTML='';
+  [...clientTickets].sort((a,b)=>(b.lastTs||0)-(a.lastTs||0)).forEach(t=>{
+    const div=document.createElement('div');
+    div.className=`ticket-item${t.status==='closed'?' closed':''}${activeTicketId===t.id?' active':''}`;
+    div.onclick=()=>selectClientTicket(t.id);
+    div.innerHTML=`
+      <div class="ticket-icon ${t.status==='open'?'open-t':'closed-t'}">${t.emoji||'📦'}</div>
+      <div class="ticket-info">
+        <div class="ticket-name">${esc(t.serviceLabel||t.service)}</div>
+        <div class="ticket-last">${esc(t.lastMsg||'Nouveau ticket')}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <span class="ticket-badge ${t.status==='open'?'open-b':'closed-b'}">${t.status==='open'?'OUVERT':'FERMÉ'}</span>
+        <span class="ticket-unread ${(t.unread||0)>0?'show':''}">${t.unread||0}</span>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+// Sélectionner un ticket client
+async function selectClientTicket(ticketId){
+  activeTicketId = ticketId;
+  const t = clientTickets.find(x=>x.id===ticketId);
+  if(!t) return;
+  t.unread=0; updateChatBubbleNotif(); renderTicketList();
+
+  // Mettre à jour header
+  document.getElementById('tch-name-label').textContent = t.serviceLabel||t.service;
+  const statusEl = document.getElementById('tch-status-label');
+  statusEl.textContent = t.status==='open' ? '● Ticket ouvert' : '🔒 Ticket fermé';
+  statusEl.className = `tch-status ${t.status==='open'?'open-s':''}`;
+
+  // Input / bannière closed
+  document.getElementById('ticket-input-area').style.display = t.status==='open' ? 'flex' : 'none';
+  document.getElementById('closed-banner').style.display = t.status==='closed' ? 'block' : 'none';
+
+  // Charger les messages
+  document.getElementById('ticket-messages').innerHTML='';
+  try{
+    const data = await apiGet(`/api/chat/messages?ticketId=${ticketId}&after=0&userId=${discordUser.id}`);
+    if(data.messages){
+      data.messages.forEach(msg=>{ if(msg.id>(clientMsgLastIds[ticketId]||0)) clientMsgLastIds[ticketId]=msg.id; appendMsgToView('ticket-messages',msg,false); });
+    }
+  }catch(e){}
+
+  showChatTab('msg');
+  document.getElementById('ticket-messages').scrollTop=9999;
+  // Démarrer polling si pas encore
+  if(!pollTimer) startClientPolling();
+}
+
+// Envoyer un message client
+async function clientSend(){
+  if(!activeTicketId||!discordUser) return;
+  const input=document.getElementById('ticket-input');
+  const text=input.value.trim(); if(!text) return;
+  input.value=''; input.style.height='auto';
+
+  // Check ticket ouvert
+  const t=clientTickets.find(x=>x.id===activeTicketId);
+  if(t && t.status==='closed'){ showToast('Ce ticket est fermé.','error'); return; }
+
+  // Affichage immédiat
+  appendMsgToView('ticket-messages',{from:'user',content:text,ts:Date.now(),username:discordUser.username},false);
+  document.getElementById('ticket-messages').scrollTop=9999;
+
+  try{
+    await apiPost('/api/chat/send',{ticketId:activeTicketId,userId:discordUser.id,username:discordUser.username,avatar:discordUser.avatar,content:text,from:'user'});
+  }catch(e){ showToast('❌ Erreur envoi.','error'); }
+}
+
+/* ══ Notifications bulle ══ */
+function updateChatBubbleNotif(){
+  const total=clientTickets.reduce((s,t)=>s+(t.unread||0),0);
+  const notif=document.getElementById('chat-notif');
+  if(total>0&&!chatOpen){ notif.style.display='flex'; notif.textContent=total; }
+  else notif.style.display='none';
+}
+
+/* ══ Tabs chat client ══ */
+function showChatTab(tab){
+  const listEl=document.getElementById('ticket-list');
+  const chatEl=document.getElementById('ticket-chat-view');
+  const tabs=document.querySelectorAll('.chat-tab');
+  const msgTabBtn=document.getElementById('chat-tab-msg');
+
+  if(tab==='msg'&&activeTicketId){
+    listEl.style.display='none'; chatEl.style.display='flex';
+    tabs.forEach(t=>t.classList.remove('active'));
+    msgTabBtn.style.display=''; msgTabBtn.classList.add('active');
+  } else {
+    listEl.style.display=''; chatEl.style.display='none';
+    tabs.forEach(t=>t.classList.remove('active'));
+    tabs[0].classList.add('active');
+  }
+}
+
+/* ══ Toggle chat ══ */
+function toggleChat(){
+  chatOpen=!chatOpen;
+  const win=document.getElementById('chat-window');
+  if(chatOpen){
+    win.classList.add('open');
+    updateChatBubbleNotif();
+    renderTicketList();
+    showChatTab('list');
+  } else { win.classList.remove('open'); }
+}
+
+/* ══════════════════════════════════════════════════════
+   ADMIN PANEL
+   ══════════════════════════════════════════════════════ */
+function toggleAdmin(){
+  adminOpen=!adminOpen;
+  const panel=document.getElementById('admin-panel');
+  if(adminOpen){ panel.classList.add('open'); loadAdminTickets(); backToAdminList(); }
+  else panel.classList.remove('open');
+}
+
+async function loadAdminTickets(){
+  try{
+    const data=await apiGet('/api/chat/admin/tickets',true);
+    if(!data.tickets) return;
+    adminTickets=data.tickets;
+    renderAdminConvList();
+    updateAdminNotif();
+    document.getElementById('admin-conv-count').textContent=adminTickets.filter(t=>t.status==='open').length;
+  }catch(e){}
+}
+
+function startAdminPolling(){
+  clearInterval(pollTimer);
+  pollTimer=setInterval(async()=>{
+    await loadAdminTickets();
+    if(adminActiveTicket) await loadAdminMessages(adminActiveTicket);
+  },POLL_MS);
+}
+
+function renderAdminConvList(){
+  const container=document.getElementById('admin-conv-list');
+  const filtered=adminTickets.filter(t=>t.status===adminActiveTab);
+
+  if(filtered.length===0){
+    container.innerHTML=`<div style="padding:24px;text-align:center;font-size:12px;color:var(--muted);">Aucun ticket ${adminActiveTab==='open'?'ouvert':'fermé'}</div>`;
+    return;
+  }
+
+  container.innerHTML='';
+  [...filtered].sort((a,b)=>(b.lastTs||0)-(a.lastTs||0)).forEach(t=>{
+    const avatarUrl=t.avatar?`https://cdn.discordapp.com/avatars/${t.userId}/${t.avatar}.png?size=32`:`https://cdn.discordapp.com/embed/avatars/0.png`;
+    const div=document.createElement('div');
+    div.className=`admin-conv-item${adminActiveTicket===t.id?' active':''}`;
+    div.onclick=()=>selectAdminTicket(t.id);
+    div.innerHTML=`
+      <div class="admin-conv-avatar"><img src="${avatarUrl}" onerror="this.style.display='none'" alt=""></div>
+      <div class="admin-conv-info">
+        <div class="admin-conv-name">${esc(t.username||t.userId)}</div>
+        <div class="admin-conv-last">${esc(t.serviceLabel||t.service||'—')}</div>
+      </div>
+      <div class="admin-conv-meta">
+        <span class="admin-unread ${(t.unread||0)>0?'show':''}">${t.unread||0}</span>
+        <span class="admin-ticket-status ${t.status==='open'?'open-s':'closed-s'}">${t.status==='open'?'OUVERT':'FERMÉ'}</span>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function showAdminTab(tab){
+  adminActiveTab=tab;
+  document.querySelectorAll('.admin-tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='open'?0:1)));
+  backToAdminList();
+  renderAdminConvList();
+}
+
+async function selectAdminTicket(ticketId){
+  adminActiveTicket=ticketId;
+  const t=adminTickets.find(x=>x.id===ticketId);
+  if(!t) return;
+  t.unread=0; updateAdminNotif(); renderAdminConvList();
+
+  document.getElementById('admin-chat-username').textContent=t.username||t.userId;
+  document.getElementById('admin-chat-ticket').textContent=`${t.serviceLabel||t.service} — #${t.id}`;
+
+  // Bouton fermer / label fermé
+  const closeBtn=document.getElementById('btn-close-ticket');
+  if(t.status==='open'){
+    closeBtn.className='btn-close-ticket'; closeBtn.textContent='Fermer le ticket';
+  } else {
+    closeBtn.className='btn-closed-label'; closeBtn.textContent='Ticket fermé';
+  }
+  // Input
+  document.getElementById('admin-input-area').style.display=t.status==='open'?'flex':'none';
+
+  // Afficher vue
+  document.getElementById('admin-conv-list').style.display='none';
+  document.querySelectorAll('.admin-tab').forEach(t=>t.style.display='none');
+  document.getElementById('admin-back').style.display='flex';
+  document.getElementById('admin-chat-view').style.display='flex';
+  document.getElementById('admin-conv-list').style.display='none';
+
+  // Charger messages
+  await loadAdminMessages(ticketId);
+}
+
+async function loadAdminMessages(ticketId){
+  try{
+    const data=await apiGet(`/api/chat/admin/messages?ticketId=${ticketId}`,true);
+    if(!data.messages) return;
+    const container=document.getElementById('admin-messages');
+    container.innerHTML='';
+    data.messages.forEach(msg=>appendMsgToView('admin-messages',msg,true));
+    container.scrollTop=container.scrollHeight;
+  }catch(e){}
+}
+
+function backToAdminList(){
+  document.getElementById('admin-chat-view').style.display='none';
+  document.getElementById('admin-conv-list').style.display='';
+  document.querySelectorAll('.admin-tab').forEach(t=>t.style.display='');
+  document.getElementById('admin-back').style.display='none';
+  adminActiveTicket=null; adminMsgLastId=0;
+  renderAdminConvList();
+}
+
+async function adminSend(){
+  if(!adminActiveTicket||!discordUser) return;
+  const input=document.getElementById('admin-input');
+  const text=input.value.trim(); if(!text) return;
+  input.value='';
+
+  const t=adminTickets.find(x=>x.id===adminActiveTicket);
+  if(t&&t.status==='closed'){ showToast('Ce ticket est fermé.','error'); return; }
+
+  // Affichage immédiat
+  appendMsgToView('admin-messages',{from:'admin',content:text,ts:Date.now(),username:discordUser.username},true);
+  document.getElementById('admin-messages').scrollTop=9999;
+
+  try{
+    await apiPost('/api/chat/send',{ticketId:adminActiveTicket,content:text,from:'admin',adminId:discordUser.id,adminUsername:discordUser.username},true);
+    // Notifier le client via DM Discord
+    await apiPost('/api/chat/notify',{ticketId:adminActiveTicket,content:text},true).catch(()=>{});
+  }catch(e){ showToast('❌ Erreur envoi.','error'); }
+}
+
+async function closeTicket(){
+  if(!adminActiveTicket) return;
+  if(!confirm('Fermer ce ticket définitivement ?')) return;
+  try{
+    await apiPost('/api/chat/ticket/close',{ticketId:adminActiveTicket},true);
+    showToast('✅ Ticket fermé.','success');
+    // Mettre à jour local
+    const t=adminTickets.find(x=>x.id===adminActiveTicket);
+    if(t){ t.status='closed'; }
+    document.getElementById('btn-close-ticket').className='btn-closed-label';
+    document.getElementById('btn-close-ticket').textContent='Ticket fermé';
+    document.getElementById('admin-input-area').style.display='none';
+    await loadAdminTickets();
+  }catch(e){ showToast('❌ Erreur.','error'); }
+}
+
+function updateAdminNotif(){
+  const total=adminTickets.reduce((s,t)=>s+(t.unread||0),0);
+  const notif=document.getElementById('admin-notif');
+  if(total>0&&!adminOpen){ notif.style.display='flex'; notif.textContent=total; }
+  else notif.style.display='none';
+}
+
+/* ══ Rendu message générique ══ */
+function appendMsgToView(containerId, msg, isAdmin){
+  const container=document.getElementById(containerId);
+  const div=document.createElement('div');
+
+  let side;
+  if(msg.from==='system') side='sys';
+  else if(isAdmin){
+    side=msg.from==='admin'?'me':'them';
+  } else {
+    side=msg.from==='user'?'me':'them';
+  }
+
+  div.className=`msg-row ${side}`;
+  div.innerHTML=`<div class="msg-bubble">${esc(msg.content)}</div>${msg.from!=='system'?`<div class="msg-meta">${msg.from==='system'?'':esc(msg.username||'')} ${fmtTime(msg.ts)}</div>`:''}`;
+  container.appendChild(div);
+}
+
+/* ══════════════════════════════════════════════════════
+   TEXTAREA AUTO-RESIZE + ENTER
+   ══════════════════════════════════════════════════════ */
+['ticket-input','admin-input'].forEach(id=>{
+  const el=document.getElementById(id); if(!el) return;
+  el.addEventListener('input',()=>{ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,90)+'px'; });
+  el.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); id==='ticket-input'?clientSend():adminSend(); } });
+});
+
+/* ══════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════ */
 restorePendingKey();
 handleOAuthCallback();
-
 </script>
+
+<!--
+══════════════════════════════════════════════════════════════════
+  ROUTES EXPRESS À AJOUTER DANS TON BOT (index.js)
+══════════════════════════════════════════════════════════════════
+
+const ADMIN_IDS = ['515793773435813901','1305867949449416755'];
+const tickets = {};   // { ticketId: { id, userId, username, avatar, service, serviceLabel, emoji, status, msgs:[], unread:0, lastMsg, lastTs, createdAt } }
+const userTickets = {}; // { userId: [ticketId, ...] }
+let ticketIdCounter = 1;
+let msgIdCounter = 1;
+
+function isAdmin(req){ return ADMIN_IDS.includes(req.headers['x-admin-id']); }
+function requireAdmin(req,res){ if(!isAdmin(req)){res.status(403).json({error:'Forbidden'});return false;} return true; }
+
+// Créer un ticket
+app.post('/api/chat/ticket/create', (req,res)=>{
+  const {userId, username, avatar, service, serviceLabel} = req.body;
+  if(!userId) return res.status(400).json({error:'Missing userId'});
+  // Chercher si un ticket ouvert existe déjà pour ce service
+  const existingId = (userTickets[userId]||[]).find(id => tickets[id]?.service===service && tickets[id]?.status==='open');
+  if(existingId) return res.json({ticket: tickets[existingId]});
+  const id = 'T' + (ticketIdCounter++).toString().padStart(4,'0');
+  tickets[id] = { id, userId, username, avatar, service, serviceLabel, status:'open', msgs:[], unread:0, lastMsg:'Nouveau ticket', lastTs:Date.now(), createdAt:Date.now() };
+  if(!userTickets[userId]) userTickets[userId]=[];
+  userTickets[userId].push(id);
+  // Message système auto
+  tickets[id].msgs.push({ id: msgIdCounter++, from:'system', content:`Ticket ouvert : ${serviceLabel}`, ts:Date.now() });
+  res.json({ticket: tickets[id]});
+});
+
+// Tickets d'un user
+app.get('/api/chat/tickets', (req,res)=>{
+  const {userId} = req.query;
+  const ids = userTickets[userId] || [];
+  const result = ids.map(id=>{ const t=tickets[id]; return {id:t.id,service:t.service,serviceLabel:t.serviceLabel,emoji:t.emoji,status:t.status,lastMsg:t.lastMsg,lastTs:t.lastTs,unread:t.unread}; });
+  res.json({tickets: result});
+});
+
+// Messages d'un ticket (client)
+app.get('/api/chat/messages', (req,res)=>{
+  const {ticketId, after, userId} = req.query;
+  const t = tickets[ticketId];
+  if(!t || t.userId !== userId) return res.status(403).json({error:'Forbidden'});
+  const msgs = t.msgs.filter(m => m.id > parseInt(after||0));
+  res.json({messages: msgs});
+});
+
+// Envoyer un message
+app.post('/api/chat/send', (req,res)=>{
+  const {ticketId, content, from, userId, username, avatar, adminId, adminUsername} = req.body;
+  const t = tickets[ticketId];
+  if(!t) return res.status(404).json({error:'Ticket not found'});
+  if(t.status==='closed') return res.status(400).json({error:'Ticket closed'});
+  if(from==='admin' && !ADMIN_IDS.includes(req.headers['x-admin-id'])) return res.status(403).json({error:'Forbidden'});
+  if(from==='user' && t.userId !== userId) return res.status(403).json({error:'Forbidden'});
+  const msg = { id: msgIdCounter++, from, content, ts:Date.now(), username: from==='admin'?adminUsername:username, avatar };
+  t.msgs.push(msg);
+  t.lastMsg = content.slice(0,50); t.lastTs = Date.now();
+  if(from==='admin') t.unread = (t.unread||0)+1;
+  res.json({ok:true, msg});
+});
+
+// Fermer un ticket (admin)
+app.post('/api/chat/ticket/close', (req,res)=>{
+  if(!requireAdmin(req,res)) return;
+  const {ticketId} = req.body;
+  if(!tickets[ticketId]) return res.status(404).json({error:'Not found'});
+  tickets[ticketId].status = 'closed';
+  tickets[ticketId].msgs.push({ id:msgIdCounter++, from:'system', content:'Ticket fermé par le support.', ts:Date.now() });
+  res.json({ok:true});
+});
+
+// Tous les tickets (admin)
+app.get('/api/chat/admin/tickets', (req,res)=>{
+  if(!requireAdmin(req,res)) return;
+  const all = Object.values(tickets).sort((a,b)=>(b.lastTs||0)-(a.lastTs||0));
+  res.json({tickets: all.map(t=>({...t, msgs:undefined}))});
+});
+
+// Messages d'un ticket (admin)
+app.get('/api/chat/admin/messages', (req,res)=>{
+  if(!requireAdmin(req,res)) return;
+  const t = tickets[req.query.ticketId];
+  if(!t) return res.status(404).json({error:'Not found'});
+  t.unread = 0;
+  res.json({messages: t.msgs});
+});
+
+// Notifier le client par DM Discord
+app.post('/api/chat/notify', async (req,res)=>{
+  if(!requireAdmin(req,res)) return;
+  const t = tickets[req.body.ticketId];
+  if(!t) return res.json({ok:false});
+  try{
+    const user = await client.users.fetch(t.userId);
+    await user.send(`💬 **ReamX Support** (#${t.id}) : ${req.body.content}`);
+    res.json({ok:true});
+  }catch(e){ res.json({ok:false}); }
+});
+
+// CORS — important pour le navigateur
+app.use((req,res,next)=>{
+  res.header('Access-Control-Allow-Origin','*');
+  res.header('Access-Control-Allow-Headers','Content-Type,x-admin-id');
+  res.header('Access-Control-Allow-Methods','GET,POST,OPTIONS');
+  if(req.method==='OPTIONS') return res.sendStatus(200);
+  next();
+});
+
+NOTE PERSISTANCE : Les données sont en RAM → perdues au redémarrage.
+Pour persister, utilise un fichier JSON ou SQLite :
+  const db = require('better-sqlite3')('reamx.db');
+══════════════════════════════════════════════════════════════════
+-->
 </body>
 </html>
