@@ -630,7 +630,7 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
    CONFIG
    ══════════════════════════════════════════════════════ */
 const DISCORD_CLIENT_ID = '1469158928800813066';
-const BOT_API_URL       = 'https://145.239.65.118:20106';
+const BOT_API_URL = 'http://145.239.65.118:20106'; 
 const ADMIN_IDS         = ['515793773435813901','1305867949449416755'];
 const POLL_MS           = 3000;
 
@@ -829,14 +829,37 @@ function isAdmin(){ return discordUser && ADMIN_IDS.includes(discordUser.id); }
 async function apiGet(path,adminAuth=false){
   const headers={};
   if(adminAuth&&discordUser) headers['x-admin-id']=discordUser.id;
-  const r=await fetch(BOT_API_URL+path,{headers});
-  return r.json();
-}
-async function apiPost(path,body,adminAuth=false){
-  const headers={'Content-Type':'application/json'};
-  if(adminAuth&&discordUser) headers['x-admin-id']=discordUser.id;
-  const r=await fetch(BOT_API_URL+path,{method:'POST',headers,body:JSON.stringify(body)});
-  return r.json();
+  const res = await fetch('http://145.239.65.118:20106/api/external-ticket', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+        userId: discordUser.id,
+        serviceKey: currentServiceKey // ou le nom de ta variable de service
+    })
+});
+
+const data = await res.json();
+
+if(data.success) {
+    // --- C'EST ICI QUE LA MAGIE OPÈRE ---
+    
+    // 1. On ferme la fenêtre de sélection du produit
+    closeModal(); 
+
+    // 2. On ajoute ce nouveau ticket à ta liste interne (clientTickets)
+    // Pour que ton système 'showChatTab' le reconnaisse
+    activeTicketId = data.channelId;
+    
+    // 3. On ouvre ta fenêtre de chat que tu as montrée dans ton code
+    if(!chatOpen) toggleChat(); 
+    
+    // 4. On affiche l'onglet des messages
+    showChatTab('msg');
+    
+    // 5. On charge les messages (ton code possède déjà cette logique)
+    loadTicketMessages(data.channelId); 
+
+    showToast("Ticket créé ! Discutez ici avec le staff.", "success");
 }
 
 /* ══════════════════════════════════════════════════════
