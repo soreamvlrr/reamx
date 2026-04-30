@@ -497,6 +497,7 @@ const products = {
     title: '120 FPS Method',
     price: '14.99€',
     unit: '/ accès',
+    ticketKey: '120-fps-ticket',
     desc: 'Guide complet pour atteindre et stabiliser les 120 FPS stables sur PC et console. Réglages système, paramètres in-game, config réseau — tout ce qu\'il faut pour jouer en smooth absolu.',
     features: [
       {icon:'✦', label:'PC Windows 10/11', desc:'Optimisation BIOS, drivers, paramètres Windows'},
@@ -537,12 +538,13 @@ const products = {
 };
 
 const DISCORD_SUPPORT_URL = 'https://discord.gg/VOTRE_INVITE'; // remplace par ton invite ou ta page de support Discord
+const TICKET_API_URL = 'https://145.239.65.118:20106'; // remplace par l'URL de ton bot
 
 function openModal(id) {
   const p = products[id];
   if (!p) return;
 
-  const serviceKey = 'buy_' + id;
+  const serviceKey = p.ticketKey || 'buy_' + id;
 
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-badge">${p.category}</div>
@@ -554,7 +556,11 @@ function openModal(id) {
     </div>
 
     <div style="margin-bottom: 20px; padding: 15px; background: rgba(88,101,242,0.1); border-radius: 10px; border: 1px solid var(--accent);">
-        <p style="font-size: 13px; color: var(--muted); line-height: 1.6;">Pour ouvrir un ticket sur Discord, clique sur le bouton ci-dessous. Tu seras redirigé vers notre serveur Discord où tu pourras créer ton ticket.</p>
+        <label style="font-size: 11px; color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase;">Ton ID Discord (obligatoire) :</label>
+        <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345"
+            style="width: 100%; background: #060608; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; outline: none; font-family: 'Space Mono', monospace; font-size: 13px;">
+        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;">Copie ton ID utilisateur Discord, pas l'ID du serveur. En mode développeur : clic droit sur ton profil → Copier l'identifiant.</p>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;"><strong>⏰ Important :</strong> Un code sera généré avec <strong>2 minutes d'expiration</strong>. Utilise la commande Discord dans ce délai !</p>
         <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;">Si l'ouverture automatique échoue, tu peux aussi <a id="discord-fallback-link" href="${DISCORD_SUPPORT_URL}" target="_blank" style="color: var(--accent); text-decoration: underline;">ouvrir mon Discord ici</a>.</p>
     </div>
 
@@ -562,7 +568,7 @@ function openModal(id) {
       <div class="modal-price">${p.price} <span>${p.unit}</span></div>
     </div>
     <div style="margin-top: 20px; display: flex; justify-content: center;">
-      <button id="btn-order" class="btn-modal" onclick="openDiscord()">Ouvrir mon ticket</button>
+      <button id="btn-order" class="btn-modal" onclick="createRemoteTicket('${serviceKey}')">Générer le code</button>
     </div>
   `;
 
@@ -575,6 +581,57 @@ function closeModal() {
 
 function toggleFaq(item) {
   item.classList.toggle('open');
+}
+
+async function createRemoteTicket(serviceKey) {
+  const userIdInput = document.getElementById('discord_user_id');
+  const userId = userIdInput ? userIdInput.value.trim() : '';
+  const btn = document.getElementById('btn-order');
+
+  if (!userId || userId.length < 17) {
+    alert('⚠️ Merci d\'entrer un ID Discord valide (17-19 chiffres).');
+    return;
+  }
+
+  if (!TICKET_API_URL || TICKET_API_URL.includes('ton-bot.example.com')) {
+    alert('⚠️ L\'URL de ton bot n\'est pas configurée. Je te redirige vers Discord pour ouvrir le ticket manuellement.');
+    window.open(DISCORD_SUPPORT_URL, '_blank');
+    return;
+  }
+
+  if (btn) {
+    btn.innerText = 'Génération du code...';
+    btn.disabled = true;
+  }
+
+  try {
+    const response = await fetch(TICKET_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, serviceKey })
+    });
+
+    const data = await response.json();
+    console.log('code generation', { userId, serviceKey, data });
+
+    if (response.ok && data.code) {
+      alert(`✅ Code généré : **${data.code}**\n\n⏰ Valide 2 minutes\n\nUtilise cette commande Discord :\n/redeem-ticket code:${data.code}\n\nLe code a été copié !`);
+      navigator.clipboard.writeText(`/redeem-ticket code:${data.code}`).catch(() => {});
+      return;
+    }
+
+    const message = data.error || data.message || 'Erreur lors de la génération du code.';
+    alert('❌ ' + message + '\nSi besoin, rejoins le Discord manuellement.');
+  } catch (error) {
+    console.error(error);
+    alert('🌐 Impossible de contacter ton bot. Je te redirige vers Discord pour ouvrir le ticket manuellement.');
+    window.open(DISCORD_SUPPORT_URL, '_blank');
+  } finally {
+    if (btn) {
+      btn.innerText = 'Ouvrir mon ticket';
+      btn.disabled = false;
+    }
+  }
 }
 
 function openDiscord() {
