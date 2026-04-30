@@ -11,10 +11,40 @@
 --bg:#060608;--surface:#0d0d12;--border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.15);
 --text:#f0f0f0;--muted:#666;--accent:#5865F2;--accent2:#EB459E;--gold:#FFD700;
 }
+
+/* CURSOR CUSTOM */
+#cursor-glow {
+  position: fixed;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(88,101,242,0.18) 0%, rgba(88,101,242,0.06) 40%, transparent 70%);
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+}
+body.cursor-hover #cursor-glow {
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(88,101,242,0.28) 0%, rgba(235,69,158,0.1) 40%, transparent 70%);
+}
+
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
 
 /* NOISE OVERLAY */
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4;pointer-events:none;z-index:0}
+
+/* PARTICLE CANVAS */
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 5%;border-bottom:1px solid var(--border);background:rgba(6,6,8,0.85);backdrop-filter:blur(20px)}
@@ -27,7 +57,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .nav-cta:hover{opacity:0.85}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;z-index:2}
 .hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(88,101,242,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.3);border-radius:20px;padding:6px 16px;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--accent);margin-bottom:30px;text-transform:uppercase}
 .hero-tag::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent)}
@@ -44,81 +74,39 @@ h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
 .stat-lbl{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
 
 /* PRODUCTS SECTION */
-.products{padding:100px 5%;max-width:1200px;margin:0 auto}
+.products{padding:100px 5%;max-width:1200px;margin:0 auto;position:relative;z-index:2}
 .section-label{font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:12px}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,70px);margin-bottom:10px;line-height:1}
 .section-sub{color:var(--muted);font-size:14px;margin-bottom:60px}
 
 /* PRODUCT CARD */
 .product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
-.product-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.3s;position:relative}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all 0.3s;position:relative}
 .product-card:hover{border-color:var(--border-hover);transform:translateY(-6px)}
 .product-card.featured{border-color:rgba(88,101,242,0.4);box-shadow:0 0 40px rgba(88,101,242,0.08)}
 
 .product-visual{height:220px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden}
-.pv-banner {
-    background-image: url('https://i.postimg.cc/dVJtqNkJ/banner.png');
-    background-size: cover;
-    background-position: center;
-}
-.pv-logo {
-    background-image: url('https://i.postimg.cc/L5ZFTLJv/0c5ba7c3-b661-462b-96ad-57c4f8adba30.png');
-    background-size: cover;
-    background-position: center;
-}
-.pv-color {
-    background-image: url('https://i.postimg.cc/3RhdvrWG/image.png');
-    background-size: cover; 
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 300px; 
-}
-.pv-fps {
-    background-image: url('https://i.postimg.cc/28tdBvYW/4a1ba393-81c4-4685-8cb3-6a9886e88f09.png');
-    background-size: cover;
-    background-position: center;
-     background-repeat: no-repeat;
-    width: 100%;
-    height: 300px; 
-}
-.pv-bot {
-    background-image: url('https://i.postimg.cc/BnG6yQBZ/image.png');
-    background-size: cover;
-    background-position: center;
-     background-repeat: no-repeat;
-    width: 100%;
-    height: 300px; 
-}
-.pv-pack {
-    background-image: url('https://i.postimg.cc/ZRqFdLWR/image.png');
-    background-size: cover;
-    background-position: center;
-     background-repeat: no-repeat;
-    width: 100%;
-    height: 300px; 
-}
+.pv-banner{background-image:url('https://i.postimg.cc/dVJtqNkJ/banner.png');background-size:cover;background-position:center}
+.pv-logo{background-image:url('https://i.postimg.cc/L5ZFTLJv/0c5ba7c3-b661-462b-96ad-57c4f8adba30.png');background-size:cover;background-position:center}
+.pv-color{background-image:url('https://i.postimg.cc/3RhdvrWG/image.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
+.pv-fps{background-image:url('https://i.postimg.cc/28tdBvYW/4a1ba393-81c4-4685-8cb3-6a9886e88f09.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
+.pv-bot{background-image:url('https://i.postimg.cc/BnG6yQBZ/image.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
+.pv-pack{background-image:url('https://i.postimg.cc/ZRqFdLWR/image.png');background-size:cover;background-position:center;background-repeat:no-repeat;width:100%;height:300px}
 
-/* Visual mocks inside cards */
 .mock-banner-img{width:100%;height:100%;background:linear-gradient(90deg,rgba(88,101,242,0.3),rgba(235,69,158,0.3));display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
 .mock-banner-text{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:#fff}
 .mock-banner-sub{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.5)}
-
 .mock-logo-inner{font-family:'Bebas Neue',sans-serif;font-size:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-
 .mock-palette{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:75%}
 .mock-swatch{height:35px;border-radius:6px}
-
 .mock-fps-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px}
 .fps-counter{font-family:'Space Mono',monospace;font-size:22px;color:#00ff88;text-shadow:0 0 10px rgba(0,255,136,0.5)}
 .fps-label{font-size:8px;color:rgba(0,255,136,0.6);letter-spacing:3px}
 .fps-bars{position:absolute;bottom:10px;left:10px;display:flex;gap:3px;align-items:flex-end}
 .fps-bar{width:4px;background:#00ff88;border-radius:2px;opacity:0.6}
-
 .bot-msg{background:rgba(88,101,242,0.2);border-radius:8px;padding:6px 10px;font-size:9px;color:rgba(255,255,255,0.7);align-self:flex-start;max-width:80%}
 .bot-msg.user{background:rgba(235,69,158,0.2);align-self:flex-end}
 .bot-cmd{background:#1a1a2e;border-radius:6px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:8px;color:var(--accent)}
-
 .pack-item{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:10px;color:rgba(255,255,255,0.6);font-weight:600;letter-spacing:0.5px}
 
 /* CARD BODY */
@@ -135,13 +123,13 @@ h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
 .card-price{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1}
 .card-price span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--muted)}
 .card-price.lifetime{color:var(--gold)}
-.btn-card{background:rgba(88,101,242,0.15);border:1px solid rgba(88,101,242,0.3);color:var(--accent);padding:11px 22px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:0.3px;cursor:pointer;display:inline-block}
+.btn-card{background:rgba(88,101,242,0.15);border:1px solid rgba(88,101,242,0.3);color:var(--accent);padding:11px 22px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:0.3px;display:inline-block}
 .btn-card:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .featured .btn-card{background:var(--accent);color:#fff;border-color:var(--accent)}
 .featured .btn-card:hover{opacity:0.85}
 
 /* PACK SECTION */
-.pack-section{padding:80px 5%;max-width:1200px;margin:0 auto}
+.pack-section{padding:80px 5%;max-width:1200px;margin:0 auto;position:relative;z-index:2}
 .pack-card{background:var(--surface);border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:50px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;position:relative;overflow:hidden}
 .pack-card::before{content:'ELITE';position:absolute;top:-20px;right:-10px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(255,215,0,0.02);pointer-events:none}
 .pack-title{font-family:'Bebas Neue',sans-serif;font-size:54px;line-height:1;margin-bottom:15px}
@@ -157,8 +145,8 @@ h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
 .btn-pack:hover{transform:translateY(-2px)}
 
 /* FAQ */
-.faq-section{padding:80px 5%;max-width:800px;margin:0 auto}
-.faq-item{border-bottom:1px solid var(--border);padding:22px 0;cursor:pointer}
+.faq-section{padding:80px 5%;max-width:800px;margin:0 auto;position:relative;z-index:2}
+.faq-item{border-bottom:1px solid var(--border);padding:22px 0}
 .faq-q{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:500}
 .faq-a{color:var(--muted);font-size:13px;line-height:1.8;margin-top:12px;display:none}
 .faq-item.open .faq-a{display:block}
@@ -166,7 +154,7 @@ h1 .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.2)}
 .faq-item.open .faq-icon{transform:rotate(45deg)}
 
 /* FOOTER */
-footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-top:60px;flex-wrap:wrap;gap:20px}
+footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-top:60px;flex-wrap:wrap;gap:20px;position:relative;z-index:2}
 .foot-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px}
 .foot-logo span{color:var(--accent)}
 .foot-links{display:flex;gap:25px}
@@ -178,7 +166,7 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border-hover);border-radius:20px;max-width:620px;width:100%;max-height:85vh;overflow-y:auto;padding:40px;position:relative}
-.modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.05);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.05);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
 .modal-close:hover{background:rgba(255,255,255,0.1)}
 .modal-badge{font-size:10px;color:var(--accent);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;margin-bottom:15px}
@@ -190,11 +178,17 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 .modal-footer{display:flex;align-items:center;justify-content:space-between;padding-top:25px;border-top:1px solid var(--border)}
 .modal-price{font-family:'Bebas Neue',sans-serif;font-size:38px}
 .modal-price span{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);font-weight:400}
-.btn-modal{background:var(--accent);color:#fff;padding:14px 30px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:opacity 0.2s}
+.btn-modal{background:var(--accent);color:#fff;padding:14px 30px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:none;transition:opacity 0.2s}
 .btn-modal:hover{opacity:0.85}
 </style>
 </head>
 <body>
+
+<!-- CURSOR GLOW -->
+<div id="cursor-glow"></div>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="particle-canvas"></canvas>
 
 <nav>
   <div class="nav-logo">REAM<span>X</span></div>
@@ -240,15 +234,9 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 
   <div class="product-grid">
 
-    <!-- BANNER -->
     <div class="product-card" onclick="openModal('banner')">
       <div class="product-visual pv-banner">
-        <div class="mock-banner">
-          <div class="mock-banner-img">
-
-          </div>
-          <div class="mock-strip"></div>
-        </div>
+        <div class="mock-banner"><div class="mock-banner-img"></div><div class="mock-strip"></div></div>
       </div>
       <div class="card-badge">Popular</div>
       <div class="card-body">
@@ -265,12 +253,8 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
       </div>
     </div>
 
-    <!-- LOGO -->
     <div class="product-card featured" onclick="openModal('logo')">
-      <div class="product-visual pv-logo">
-        <div class="mock-logo-ring">
-        </div>
-      </div>
+      <div class="product-visual pv-logo"><div class="mock-logo-ring"></div></div>
       <div class="card-badge hot">Best Seller</div>
       <div class="card-body">
         <div class="card-category">Branding</div>
@@ -286,12 +270,8 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
       </div>
     </div>
 
-    <!-- COLOR GRADING -->
     <div class="product-card" onclick="openModal('color')">
-      <div class="product-visual pv-color">
-        <div class="mock-palette">
-        </div>
-      </div>
+      <div class="product-visual pv-color"><div class="mock-palette"></div></div>
       <div class="card-body">
         <div class="card-category">Post-production</div>
         <div class="card-name">Color Correction</div>
@@ -306,19 +286,13 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
       </div>
     </div>
 
-    <!-- 120 FPS -->
     <div class="product-card" onclick="openModal('fps')">
-      <div class="product-visual pv-fps">
-        <div class="mock-fps-screen">
-          <div class="mock-fps-overlay">
-          </div>
-        </div>
-      </div>
+      <div class="product-visual pv-fps"><div class="mock-fps-screen"><div class="mock-fps-overlay"></div></div></div>
       <div class="card-badge new">New</div>
       <div class="card-body">
         <div class="card-category">Optimisation</div>
         <div class="card-name">120 FPS Method</div>
-        <div class="card-desc">Méthode complète pour poster en 120 FPS sur tiktok .</div>
+        <div class="card-desc">Méthode complète pour poster en 120 FPS sur tiktok.</div>
         <div class="card-features">
           <span class="feat">PC & Console</span><span class="feat">Guide PDF</span><span class="feat">Support live</span><span class="feat">Garanti</span>
         </div>
@@ -329,12 +303,8 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
       </div>
     </div>
 
-    <!-- BOT DISCORD -->
     <div class="product-card" onclick="openModal('bot')">
-      <div class="product-visual pv-bot">
-        <div class="mock-bot-ui"> 
-        </div>
-      </div>
+      <div class="product-visual pv-bot"><div class="mock-bot-ui"></div></div>
       <div class="card-body">
         <div class="card-category">Discord</div>
         <div class="card-name">Bot Discord Custom</div>
@@ -349,12 +319,8 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
       </div>
     </div>
 
-    <!-- EDIT -->
     <div class="product-card" onclick="openModal('edit')">
-<div class="product-visual pv-pack">        <div class="mock-pack">
-
-        </div>
-      </div>
+      <div class="product-visual pv-pack"><div class="mock-pack"></div></div>
       <div class="card-body">
         <div class="card-category">Montage</div>
         <div class="card-name">Clip Edit</div>
@@ -448,13 +414,153 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
 </div>
 
 <script>
-  
+
+/* ===================== PARTICLE SYSTEM ===================== */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(true); }
+  reset(initial) {
+    this.x = Math.random() * canvas.width;
+    this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = -(Math.random() * 0.4 + 0.1);
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.opacityDelta = (Math.random() * 0.003 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
+    const r = Math.random();
+    if (r < 0.5) { this.color = `rgba(88,101,242,`; }
+    else if (r < 0.8) { this.color = `rgba(235,69,158,`; }
+    else { this.color = `rgba(255,255,255,`; }
+    this.mouseInfluence = Math.random() * 0.015 + 0.003;
+  }
+  update() {
+    const dx = mouseX - this.x;
+    const dy = mouseY - this.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 180) {
+      const force = (180 - dist) / 180;
+      this.x -= (dx / dist) * force * 0.8;
+      this.y -= (dy / dist) * force * 0.8;
+    }
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.opacity += this.opacityDelta;
+    if (this.opacity > 0.6) { this.opacity = 0.6; this.opacityDelta *= -1; }
+    if (this.opacity < 0.05) { this.opacity = 0.05; this.opacityDelta *= -1; }
+    if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10) { this.reset(false); }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color + this.opacity + ')';
+    ctx.fill();
+  }
+}
+
+// Lignes de grille animées en fond
+class GridLine {
+  constructor(isHorizontal) {
+    this.isHorizontal = isHorizontal;
+    this.pos = isHorizontal ? Math.random() * window.innerHeight : Math.random() * window.innerWidth;
+    this.speed = (Math.random() * 0.15 + 0.05) * (Math.random() > 0.5 ? 1 : -1);
+    this.opacity = Math.random() * 0.04 + 0.01;
+  }
+  update() {
+    this.pos += this.speed;
+    if (this.isHorizontal) {
+      if (this.pos > window.innerHeight + 50) this.pos = -50;
+      if (this.pos < -50) this.pos = window.innerHeight + 50;
+    } else {
+      if (this.pos > window.innerWidth + 50) this.pos = -50;
+      if (this.pos < -50) this.pos = window.innerWidth + 50;
+    }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.strokeStyle = `rgba(88,101,242,${this.opacity})`;
+    ctx.lineWidth = 0.5;
+    if (this.isHorizontal) {
+      ctx.moveTo(0, this.pos); ctx.lineTo(canvas.width, this.pos);
+    } else {
+      ctx.moveTo(this.pos, 0); ctx.lineTo(this.pos, canvas.height);
+    }
+    ctx.stroke();
+  }
+}
+
+// Init
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+const gridLines = [];
+for (let i = 0; i < 8; i++) gridLines.push(new GridLine(true));
+for (let i = 0; i < 8; i++) gridLines.push(new GridLine(false));
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  gridLines.forEach(l => { l.update(); l.draw(); });
+  particles.forEach(p => { p.update(); p.draw(); });
+
+  // Connexions entre particules proches
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 80) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(88,101,242,${0.08 * (1 - dist / 80)})`;
+        ctx.lineWidth = 0.4;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* ===================== CURSOR GLOW ===================== */
+const cursorGlow = document.getElementById('cursor-glow');
+let glowX = window.innerWidth / 2, glowY = window.innerHeight / 2;
+let targetGlowX = glowX, targetGlowY = glowY;
+
+document.addEventListener('mousemove', (e) => {
+  targetGlowX = e.clientX;
+  targetGlowY = e.clientY;
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animateGlow() {
+  glowX += (targetGlowX - glowX) * 0.08;
+  glowY += (targetGlowY - glowY) * 0.08;
+  cursorGlow.style.left = glowX + 'px';
+  cursorGlow.style.top = glowY + 'px';
+  requestAnimationFrame(animateGlow);
+}
+animateGlow();
+
+document.querySelectorAll('a, button, .product-card, .faq-item, .btn-card, .nav-cta, .btn-primary, .btn-ghost, .btn-pack, .btn-modal').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+});
+
+/* ===================== PRODUCTS DATA ===================== */
 const products = {
   banner: {
-    category: 'Identité visuelle',
-    title: 'Banner Header',
-    price: '4.99€',
-    unit: '/ pièce',
+    category: 'Identité visuelle', title: 'Banner Header', price: '4.99€', unit: '/ pièce',
     desc: 'Un banner gaming ou créateur entièrement personnalisé. Texte 3D sur mesure, fond thématique (anime, manga, célébrités, jeux…), fichiers PSD éditables inclus pour que tu puisses modifier à tout moment.',
     features: [
       {icon:'✦', label:'Texte 3D rendu', desc:'Effet professionnel avec ombres et lumières'},
@@ -465,10 +571,7 @@ const products = {
     ]
   },
   logo: {
-    category: 'Branding',
-    title: 'Logo 3D / 2D',
-    price: '9.99€',
-    unit: '/ pièce',
+    category: 'Branding', title: 'Logo 3D / 2D', price: '9.99€', unit: '/ pièce',
     desc: 'Logo professionnel statique ou animé. Idéal pour ta chaîne YouTube, ton stream Twitch ou ton serveur Discord. Rendu 3D photoréaliste ou design 2D épuré selon tes goûts.',
     features: [
       {icon:'✦', label:'3D ou 2D au choix', desc:'Modélisation 3D ou design vectoriel plat'},
@@ -479,10 +582,7 @@ const products = {
     ]
   },
   color: {
-    category: 'Post-production',
-    title: 'Color Correction',
-    price: '7.99€',
-    unit: '/ vidéo',
+    category: 'Post-production', title: 'Color Correction', price: '7.99€', unit: '/ vidéo',
     desc: 'Retouche colorimétrique pro pour tes clips, montages, thumbnails ou photos de profil. Donne un look cinématique, gaming ou streetwear à ton contenu pour le faire sortir du lot.',
     features: [
       {icon:'✦', label:'LUT personnalisée', desc:'Palette colorimétrique adaptée à ton style'},
@@ -493,11 +593,7 @@ const products = {
     ]
   },
   fps: {
-    category: 'Optimisation gaming',
-    title: '120 FPS Method',
-    price: '14.99€',
-    unit: '/ accès',
-    ticketKey: '120-fps-ticket',
+    category: 'Optimisation gaming', title: '120 FPS Method', price: '14.99€', unit: '/ accès', ticketKey: '120-fps-ticket',
     desc: 'Guide complet pour atteindre et stabiliser les 120 FPS stables sur PC et console. Réglages système, paramètres in-game, config réseau — tout ce qu\'il faut pour jouer en smooth absolu.',
     features: [
       {icon:'✦', label:'PC Windows 10/11', desc:'Optimisation BIOS, drivers, paramètres Windows'},
@@ -508,10 +604,7 @@ const products = {
     ]
   },
   bot: {
-    category: 'Discord',
-    title: 'Bot Discord Custom',
-    price: '24.99€',
-    unit: '/ bot',
+    category: 'Discord', title: 'Bot Discord Custom', price: '24.99€', unit: '/ bot',
     desc: 'Bot Discord développé entièrement sur mesure selon tes besoins. Système de tickets, rôles auto, bienvenue personnalisée, modération, musique, commandes slash et bien plus.',
     features: [
       {icon:'✦', label:'Développé sur mesure', desc:'Toutes les fonctionnalités que tu veux'},
@@ -522,10 +615,7 @@ const products = {
     ]
   },
   edit: {
-    category: 'Montage vidéo',
-    title: 'Clip Edit',
-    price: '14.99€',
-    unit: '/ clip',
+    category: 'Montage vidéo', title: 'Clip Edit', price: '14.99€', unit: '/ clip',
     desc: 'Montage gaming stylé pour tes highlights, fragmovies ou contenu short-form. Transitions dynamiques, synchro musique, effets visuels et sous-titres inclus.',
     features: [
       {icon:'✦', label:'CapCut ou Premiere Pro', desc:'Logiciel adapté à ta demande et au format'},
@@ -537,15 +627,13 @@ const products = {
   }
 };
 
-const DISCORD_SUPPORT_URL = 'https://discord.gg/VOTRE_INVITE'; // remplace par ton invite ou ta page de support Discord
-const TICKET_API_URL = 'https://145.239.65.118:20106'; // remplace par l'URL de ton bot
+const DISCORD_SUPPORT_URL = 'https://discord.gg/nZrJxcgPp7';
+const TICKET_API_URL = 'https://145.239.65.118:20106';
 
 function openModal(id) {
   const p = products[id];
   if (!p) return;
-
   const serviceKey = p.ticketKey || 'buy_' + id;
-
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-badge">${p.category}</div>
     <div class="modal-title">${p.title}</div>
@@ -554,25 +642,28 @@ function openModal(id) {
       <h4>Ce qui est inclus</h4>
       ${p.features.map(f => `<div class="modal-feat-item"><span class="modal-feat-icon">${f.icon}</span><div><strong style="font-size:13px">${f.label}</strong><br><span style="color:var(--muted);font-size:12px">${f.desc}</span></div></div>`).join('')}
     </div>
-
-    <div style="margin-bottom: 20px; padding: 15px; background: rgba(88,101,242,0.1); border-radius: 10px; border: 1px solid var(--accent);">
-        <label style="font-size: 11px; color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase;">Ton ID Discord (obligatoire) :</label>
-        <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345"
-            style="width: 100%; background: #060608; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; outline: none; font-family: 'Space Mono', monospace; font-size: 13px;">
-        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;">Copie ton ID utilisateur Discord, pas l'ID du serveur. En mode développeur : clic droit sur ton profil → Copier l'identifiant.</p>
-        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;"><strong>⏰ Important :</strong> Un code sera généré avec <strong>2 minutes d'expiration</strong>. Utilise la commande Discord dans ce délai !</p>
-        <p style="font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5;">Si l'ouverture automatique échoue, tu peux aussi <a id="discord-fallback-link" href="${DISCORD_SUPPORT_URL}" target="_blank" style="color: var(--accent); text-decoration: underline;">ouvrir mon Discord ici</a>.</p>
+    <div style="margin-bottom:20px;padding:15px;background:rgba(88,101,242,0.1);border-radius:10px;border:1px solid var(--accent);">
+      <label style="font-size:11px;color:var(--accent);font-weight:bold;display:block;margin-bottom:8px;text-transform:uppercase;">Ton ID Discord (obligatoire) :</label>
+      <input type="text" id="discord_user_id" placeholder="Ex: 282123456789012345"
+        style="width:100%;background:#060608;border:1px solid var(--border);color:white;padding:12px;border-radius:8px;outline:none;font-family:'Space Mono',monospace;font-size:13px;">
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;">Copie ton ID utilisateur Discord, pas l'ID du serveur. En mode développeur : clic droit sur ton profil → Copier l'identifiant.</p>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;"><strong>⏰ Important :</strong> Un code sera généré avec <strong>2 minutes d'expiration</strong>. Utilise la commande Discord dans ce délai !</p>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;">Si l'ouverture automatique échoue, tu peux aussi <a id="discord-fallback-link" href="${DISCORD_SUPPORT_URL}" target="_blank" style="color:var(--accent);text-decoration:underline;">ouvrir mon Discord ici</a>.</p>
     </div>
-
     <div class="modal-footer">
       <div class="modal-price">${p.price} <span>${p.unit}</span></div>
     </div>
-    <div style="margin-top: 20px; display: flex; justify-content: center;">
+    <div style="margin-top:20px;display:flex;justify-content:center;">
       <button id="btn-order" class="btn-modal" onclick="createRemoteTicket('${serviceKey}')">Générer le code</button>
     </div>
   `;
-
   document.getElementById('modal').classList.add('open');
+  setTimeout(() => {
+    document.querySelectorAll('.modal a, .modal button, .modal input').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+  }, 50);
 }
 
 function closeModal() {
@@ -587,55 +678,36 @@ async function createRemoteTicket(serviceKey) {
   const userIdInput = document.getElementById('discord_user_id');
   const userId = userIdInput ? userIdInput.value.trim() : '';
   const btn = document.getElementById('btn-order');
-
   if (!userId || userId.length < 17) {
     alert('⚠️ Merci d\'entrer un ID Discord valide (17-19 chiffres).');
     return;
   }
-
   if (!TICKET_API_URL || TICKET_API_URL.includes('ton-bot.example.com')) {
     alert('⚠️ L\'URL de ton bot n\'est pas configurée. Je te redirige vers Discord pour ouvrir le ticket manuellement.');
     window.open(DISCORD_SUPPORT_URL, '_blank');
     return;
   }
-
-  if (btn) {
-    btn.innerText = 'Génération du code...';
-    btn.disabled = true;
-  }
-
+  if (btn) { btn.innerText = 'Génération du code...'; btn.disabled = true; }
   try {
     const response = await fetch(TICKET_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, serviceKey })
     });
-
     const data = await response.json();
-    console.log('code generation', { userId, serviceKey, data });
-
     if (response.ok && data.code) {
       alert(`✅ Code généré : **${data.code}**\n\n⏰ Valide 2 minutes\n\nUtilise cette commande Discord :\n/redeem-ticket code:${data.code}\n\nLe code a été copié !`);
       navigator.clipboard.writeText(`/redeem-ticket code:${data.code}`).catch(() => {});
       return;
     }
-
     const message = data.error || data.message || 'Erreur lors de la génération du code.';
     alert('❌ ' + message + '\nSi besoin, rejoins le Discord manuellement.');
   } catch (error) {
-    console.error(error);
     alert('🌐 Impossible de contacter ton bot. Je te redirige vers Discord pour ouvrir le ticket manuellement.');
     window.open(DISCORD_SUPPORT_URL, '_blank');
   } finally {
-    if (btn) {
-      btn.innerText = 'Ouvrir mon ticket';
-      btn.disabled = false;
-    }
+    if (btn) { btn.innerText = 'Ouvrir mon ticket'; btn.disabled = false; }
   }
-}
-
-function openDiscord() {
-  window.open(DISCORD_SUPPORT_URL, '_blank');
 }
 
 </script>
