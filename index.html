@@ -53,8 +53,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .nav-links{display:flex;gap:30px;list-style:none}
 .nav-links a{color:var(--muted);font-size:13px;font-weight:500;text-decoration:none;letter-spacing:0.5px;transition:color 0.2s}
 .nav-links a:hover{color:#fff}
-.nav-cta{background:var(--accent);color:#fff;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.3px;transition:opacity 0.2s}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-cta{background:var(--accent);color:#fff;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.3px;transition:opacity 0.2s;white-space:nowrap}
 .nav-cta:hover{opacity:0.85}
+#nav-user{white-space:nowrap}
 
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;z-index:2}
@@ -197,7 +199,9 @@ footer{padding:50px 5%;border-top:1px solid var(--border);display:flex;justify-c
     <li><a href="#pack">Pack Elite</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
-  <a href="#products" class="nav-cta">Commander</a>
+  <div class="nav-right">
+    <a href="#products" class="nav-cta" id="nav-cta-btn">Commander</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -629,6 +633,10 @@ const products = {
 
 /* ===================== CONFIG ===================== */
 const DISCORD_CLIENT_ID = '1469158928800813066';
+// ⚠️ Katabump expose ton bot via HTTPS sur ce port — si le cert est auto-signé,
+// tu dois ajouter l'exception manuellement dans le navigateur en visitant :
+// https://145.239.65.118:20106/ping une seule fois.
+// Ou mieux : ajoute un domaine custom dans Katabump Network et utilise ce domaine ici.
 const BOT_API_URL = 'https://145.239.65.118:20106';
 // Mettre ici l'URL exacte de ton site (sans slash final) pour le redirect OAuth
 const SITE_URL = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
@@ -690,9 +698,13 @@ function updateNavUser() {
   el.innerHTML = `
     <img src="${avatarUrl}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
     <span style="font-size:13px;font-weight:600;color:#fff;">${discordUser.username}</span>
-    <button onclick="disconnectUser()" style="background:none;border:none;color:var(--muted);font-size:11px;padding:0 0 0 4px;">✕</button>
+    <button onclick="disconnectUser()" style="background:none;border:none;color:var(--muted);font-size:11px;padding:0 0 0 4px;line-height:1;">✕</button>
   `;
-  document.querySelector('nav').appendChild(el);
+
+  // Injecter dans .nav-right, AVANT le bouton Commander
+  const navRight = document.querySelector('.nav-right');
+  const ctaBtn = document.getElementById('nav-cta-btn');
+  navRight.insertBefore(el, ctaBtn);
 }
 
 function disconnectUser() {
